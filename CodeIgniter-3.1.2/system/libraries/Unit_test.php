@@ -310,9 +310,9 @@ class CI_Unit_test {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set the template
+	 * Set the templates
 	 *
-	 * This lets us set the template to be used to display results
+	 * This lets us set the templates to be used to display results
 	 *
 	 * @param	string
 	 * @return	void
