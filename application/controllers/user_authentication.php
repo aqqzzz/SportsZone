@@ -57,6 +57,7 @@ class user_authentication extends CI_Controller {
 
     //处理登录过程的逻辑
     public function login_process(){
+        $this->session->unset_userdata['logged_in'];
 
         $this->form_validation->set_rules('username','Username','trim|required|xss_clean');
         $this->form_validation->set_rules('password','Password','trim|required|xss_clean');
