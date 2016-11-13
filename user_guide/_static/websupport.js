@@ -425,7 +425,7 @@
    */
   function handleVote(link) {
     if (!opts.voting) {
-      showError("You'll need to login to vote.");
+      showError("You'll need to authentication to vote.");
       return;
     }
 
