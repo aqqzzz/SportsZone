@@ -5,7 +5,8 @@ body {
     width: 100%;
 }
 body {
-    font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+
+    font-family: 'Merriweather', 'Helvetica Neue','Microsoft YaHei UI','微软雅黑', Arial, sans-serif;
 }
 hr {
     border-color: #F05F40;
@@ -150,7 +151,7 @@ aside {
 }
 
 
-header {
+header #home {
     position: relative;
     width: 100%;
 
@@ -163,6 +164,8 @@ header {
     text-align: center;
     color: white;
 }
+
+
 
 header .header-content {
     position: relative;
@@ -191,7 +194,7 @@ header .header-content .header-content-inner p {
 }
 
 @media (min-width: 768px) {
-    header {
+    header #home{
         min-height:100%;
     }
 
@@ -446,6 +449,7 @@ body {
 /*login和register的表单居中*/
 
 .center-input{
+
     margin: 10px auto;
     float:none;
 }

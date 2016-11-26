@@ -34,8 +34,10 @@ class user_authentication extends CI_Controller {
 
     //处理注册过程的逻辑
     public function register_process(){
-        $this->form_validation->set_rules('username','Username','trim|required|xss_clean');
-        $this->form_validation->set_rules('password','Password','trim|required|xss_clean');
+        $this->form_validation->set_rules('username','Username','trim|required|xss_clean',
+            array('required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'));
+        $this->form_validation->set_rules('password','Password','trim|required|xss_clean',
+            array('required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'));
 
         if($this->form_validation->run()==FALSE){
             $this->load->view('login/registration_form');
@@ -46,10 +48,10 @@ class user_authentication extends CI_Controller {
             );
             $result = $this->login_database->registration_insert($data);
             if($result==TRUE){
-                $data['message_display'] = 'Registration Successfully!';
+                $data['message_display'] = '注册成功！';
                 $this->load->view('login/login_form',$data);
             }else{
-                $data['message_display'] = 'Username already exist!';
+                $data['message_display'] = '用户名已存在';
                 $this->load->view('login/registration_form',$data);
             }
         }
@@ -59,8 +61,13 @@ class user_authentication extends CI_Controller {
     public function login_process(){
         $this->session->unset_userdata['logged_in'];
 
-        $this->form_validation->set_rules('username','Username','trim|required|xss_clean');
-        $this->form_validation->set_rules('password','Password','trim|required|xss_clean');
+        $this->form_validation->set_rules('username','Username','trim|required|xss_clean',
+            array('required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'));
+        $this->form_validation->set_rules('password','Password','trim|required|xss_clean',
+            array('required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'));
+
+       // $this->form_validation->set_rules('username','Username','neccessary_input_check');
+        //$this->form_validation->set_rules('password','Password','neccessary_input_check');
 
         if($this->form_validation->run() == FALSE) {
 
@@ -93,7 +100,7 @@ class user_authentication extends CI_Controller {
 
             }else{
                 $data = array(
-                    'error_message' => 'Invalid Username or Password'
+                    'error_message' => '用户名或密码无效！'
                 );
                 $this->load->view('login/login_form', $data);
 
@@ -101,10 +108,12 @@ class user_authentication extends CI_Controller {
         }
     }
 
+
+
     //注销登录
     public function logout(){
         $this->session->unset_userdata('logged_in');
-        $data['message_display'] = 'Successfully Logout';
+        $data['message_display'] = '成功登出！';
         $this->load->view('login/login_form',$data);
     }
 }

@@ -63,6 +63,7 @@ if (isset($this->session->userdata['logged_in'])){
             echo "<div class='error-message'>";
             echo "<span>";
             if(isset($error_message)){
+                echo "<i class='fa fa-exclamation-triangle'></i>";
                 echo $error_message;
             }
             echo validation_errors();
@@ -77,7 +78,7 @@ if (isset($this->session->userdata['logged_in'])){
                 <input type="password" class="form-control" name="password" id="password" placeholder="密码"/>
             </div>
 
-            <input type="submit" class="btn btn-primary" value=" Login " name="submit"/><br />
+            <input type="submit" class="btn btn-primary" value="Login " name="submit"/><br />
             <a href="<?php echo base_url() ?>user_authentication/show_registration">To SignUp Click Here</a>
             <?php echo form_close(); ?>
             <div class="connect">

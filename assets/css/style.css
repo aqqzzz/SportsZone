@@ -185,7 +185,8 @@ header {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    background-image: url('../images/header-tem.jpg');
+
+    background-image:url('../images/header-tem.jpg');
     background-position: center;
     text-align: center;
     color: white;
@@ -194,16 +195,8 @@ header {
 header .header-content {
     position: relative;
     text-align: center;
-    padding: 100px 15px 100px;
+    padding: 25px 15px 25px;
     width: 100%;
-}
-
-header .header-content .header-content-inner h1 {
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 30px;
 }
 
 section {
@@ -414,10 +407,6 @@ section {
 /* user html */
 
 
-
-#user header {
-    background-image: url('../images/header-tem.jpg');
-}
 
 #user, #statistics {
     background-image: url('../images/background/background-user.jpg');

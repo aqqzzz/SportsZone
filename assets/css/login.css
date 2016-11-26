@@ -38,6 +38,7 @@ form {
     border-radius: 6px;
     border: 1px solid #3d3d3d; /* browsers that don't support rgba */
     border: 1px solid rgba(255,255,255,.15);
+
     -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
     box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
@@ -49,7 +50,10 @@ form {
     -moz-transition: all .2s;
     -webkit-transition: all .2s;
     -ms-transition: all .2s;
+
 }
+
+
 
 input:-moz-placeholder { color: #fff; }
 input:-ms-input-placeholder { color: #fff; }
@@ -72,8 +76,12 @@ input:focus {
 
 .error-message {
     text-align: center;
-    background-color: #f05f40;
 
+}
+
+.message {
+    font-size: 20px;
+    margin-top: 50px;
 }
 
 

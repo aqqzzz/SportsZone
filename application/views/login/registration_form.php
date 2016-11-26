@@ -45,6 +45,7 @@ if(isset($this->session->userdata['logged_in'])){
         <div class="loginForm">
             <?php
             echo form_open('user_authentication/register_process');
+
             echo "<div class='error_message'>".validation_errors()."</div>";
             ?>
 
@@ -52,8 +53,9 @@ if(isset($this->session->userdata['logged_in'])){
                 <input type="text" class="form-control" name="username" id="name" placeholder="用户名"/>
             </div>
             <?php
-            echo "<div class='error_message'>";
+            echo "<div class='error-message'>";
             if(isset($message_display)){
+                echo "<i class='fa fa-exclamation-triangle'></i>";
                 echo $message_display;
             }
             echo "</div>";

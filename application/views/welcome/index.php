@@ -1,17 +1,20 @@
 
 
 
-    <header id="home">
-        <!--主页面的背景图-->
-        <div class="header-content">
-            <div class="header-content-inner">
+    <header>
+        <div id="home">
+            <!--主页面的背景图-->
+            <div class="header-content">
+                <div class="header-content-inner">
 
-                <h1 id="homeHeading">专属于你的运动社区</h1>
-                <hr>
-                <p>和运动发烧友、医生、教练一起开启你的运动之旅</p>
-                <a href="#activities" class="btn btn-primary btn-xl page-scroll">发现</a>
+                    <h1 id="homeHeading">专属于你的运动社区</h1>
+                    <hr>
+                    <p>和运动发烧友一起开启你的运动之旅</p>
+                    <a href="#activities" class="btn btn-primary btn-xl page-scroll">发现</a>
+                </div>
             </div>
         </div>
+
     </header>
 
     <section id="activities">
