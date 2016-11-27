@@ -180,7 +180,7 @@ body {
 header {
     position: relative;
     width: 100%;
-
+    height:auto;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -219,14 +219,15 @@ section {
 }
 
 
-#guiding .list-group .active {
+.list-group .active, .list-group-item.active {
     background-color: #f05f40;
     border-color: #f05f40;
 }
 
-#guiding .list-group a:hover {
+.list-group a:hover, .list-group-item.active:hover {
     background-color: #f0ad4e;
     color: whitesmoke;
+    border: #f0ad4e;
     -webkit-transition:  0.35s;
     -moz-transition:  0.35s;
     -ms-transition:  0.35s;
@@ -234,14 +235,19 @@ section {
     transition:  0.35s;;
 }
 
-#guiding .list-group.affix {
+.list-group.affix {
     position: fixed;
     top: 0;
 }
 
-#guiding .nav li.active a {
-    background-color: #f05f40;
-    color: white
+/*#guiding .nav li.active a {*/
+    /*background-color: #f05f40;*/
+    /*color: white*/
+/*}*/
+
+li.active a{
+    background-color: #F05F40;
+    color:white;
 }
 
 #guiding .nav a:hover {
@@ -406,7 +412,21 @@ section {
 
 /* user html */
 
+#user img:hover, #user .portfolio-box:hover{
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
 
+    -webkit-transition: all 0.35s;
+    -moz-transition: all 0.35s;
+    -ms-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+
+    z-index: 2;
+}
 
 #user, #statistics {
     background-image: url('../images/background/background-user.jpg');
@@ -451,9 +471,6 @@ section {
     position: fixed;
 }
 
-
-
-
 #user #content .body .interest .edit-message a:hover{
     color: #f05f40;
 }
@@ -462,6 +479,22 @@ section {
     font-size: 14px;
     color: grey;
 }
+
+#user .portfolio-box{
+    width:auto;
+    height:auto;
+    display:inline-block;
+    border-radius: 50%;
+}
+
+#user .user-portrait .portfolio-box .portfolio-box-caption{
+    background: transparent;
+}
+
+#user .user-portrait .portfolio-box .portfolio-box-caption:hover {
+    opacity: 1;
+}
+
 
 
 /*user and community using */

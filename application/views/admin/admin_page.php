@@ -81,9 +81,12 @@ if (isset($this->session->userdata['logged_in'])) {
                 </li>
 
                 <li>
-                    <a id="logout" href="logout">Logout</a>
+                    <a href="logout">Logout</a>
                 </li>
 
+                <li>
+                    <a href="<?php echo site_url()?>user_authentication/user_info_setting"><i class="fa fa-cog"></i></a>
+                </li>
 
 
             </ul>
@@ -104,11 +107,27 @@ if (isset($this->session->userdata['logged_in'])) {
     <div class="container">
         <div class="header text-center">
             <div class="user-portrait">
-                <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
+                <div class="portfolio-box">
+                    <a href="<?=base_url();?>assets/images/users/6.jpg">
+                        <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle" alt="avator">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-category">
+                                    设置
+                                </div>
+                                <div class="project-name">
 
-                <p class="user-name">张耳朵</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <br>
+                <p class="user-name"><?php echo $username?></p>
                 <i class="fa fa-venus"></i>
                 <p>一句话介绍一下自己吧</p>
+
             </div>
         </div>
         <div class="user-navbar">
@@ -142,7 +161,7 @@ if (isset($this->session->userdata['logged_in'])) {
                         </div>
                     </div>-->
                     <div class="user-intCircle">
-
+                        <!--第二版功能完善-->
                     </div>
 
                     <div class="user-statistic">
@@ -167,7 +186,7 @@ if (isset($this->session->userdata['logged_in'])) {
                     <div class="message-item">
                         <div class="message-header">
                             <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
+                            <p class="user-name"><?php echo $username?><br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
                             这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容

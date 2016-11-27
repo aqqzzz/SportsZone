@@ -116,4 +116,9 @@ class user_authentication extends CI_Controller {
         $data['message_display'] = '成功登出！';
         $this->load->view('login/login_form',$data);
     }
+
+    //个人信息设置
+    public function user_info_setting(){
+        $this->load->view('admin/user_setting');
+    }
 }

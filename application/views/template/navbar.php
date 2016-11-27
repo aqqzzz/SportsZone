@@ -33,7 +33,7 @@
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="user.html">User</a>
+                    <a href="<?php echo site_url()?>user_authentication">User</a>
                 </li>
 
                 <li>
