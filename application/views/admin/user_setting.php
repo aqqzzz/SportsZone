@@ -120,11 +120,11 @@ if (isset($this->session->userdata['logged_in'])) {
                             <legend>个人信息
                                 <button class="btn btn-primary" id="user-info-edit">修改</button></legend>
                             <form id="user-info-box">
-                                <p>用户名：<span><?php echo $username?></span></p>
-                                <p>
+                                <p class="user-info">用户名：<span><?php echo $username?></span></p>
+                                <p class="user-info">
                                     性别：<span>请设置</span>
                                 </p>
-                                <p>
+                                <p class="user-info">
                                     所在城市：<span>请设置</span>
                                 </p>
                             </form>
