@@ -37,6 +37,8 @@ class login_database extends CI_Model {
         }
     }
 
+
+
     //注册插入用户信息（注意查重）
     public function registration_insert($data){
         $query = $this->db->query('SELECT * FROM user WHERE username="'.$data['username'].'"');
@@ -47,6 +49,15 @@ class login_database extends CI_Model {
                 'avatar'=>'123123'
             );
             return $result = $this->db->insert('user',$insert_data);
+        }
+    }
+
+    //更新用户信息
+    public function update_user_information($userid,$data){
+        $query = $this->db->where('userid',$userid);
+        $query = $this->db->query('SELECT * FROM user WHERE username="'.$data['username'].'"');
+        if($query->num_rows()==0) {
+            return $this->db->update('user', $data);
         }
     }
 }

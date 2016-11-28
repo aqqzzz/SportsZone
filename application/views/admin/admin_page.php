@@ -2,11 +2,14 @@
 <html lang="en">
 <?php
 if (isset($this->session->userdata['logged_in'])) {
+    $userid = ($this->session->userdata['logged_in']['userid']);
     $username = ($this->session->userdata['logged_in']['username']);
 
 } else {
     header("location: login");
 }
+header("Content-Type: text/html; charset=utf-8");
+
 ?>
 <head>
     <meta charset="UTF-8">
@@ -85,7 +88,7 @@ if (isset($this->session->userdata['logged_in'])) {
                 </li>
 
                 <li>
-                    <a href="<?php echo site_url()?>user_authentication/user_info_setting"><i class="fa fa-cog"></i></a>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting/".$username?>"><i class="fa fa-cog"></i></a>
                 </li>
 
 

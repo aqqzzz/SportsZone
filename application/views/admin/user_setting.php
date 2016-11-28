@@ -2,11 +2,15 @@
 <html lang="en">
 <?php
 if (isset($this->session->userdata['logged_in'])) {
+    $userid = ($this->session->userdata['logged_in']['userid']);
     $username = ($this->session->userdata['logged_in']['username']);
-
+    $avatar = ($this->session->userdata['logged_in']['avatar']);
+    $sex = ($this->session->userdata['logged_in']['sex']);
+    $city = ($this->session->userdata['logged_in']['cityid']);
 } else {
     header("location: login");
 }
+header("Content-Type: text/html; charset=utf-8");
 ?>
 <head>
     <meta charset="UTF-8">
@@ -81,11 +85,15 @@ if (isset($this->session->userdata['logged_in'])) {
                 </li>
 
                 <li>
-                    <a id="logout" href="logout">Logout</a>
+                    <a id="logout" href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
                 </li>
 
-                <li>
-                    <a href="#"><i class="fa fa-cog"></i></a>
+                <li class="dropdown">
+                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">编辑资料</a></li>
+                        <li><a href="#">修改密码</a></li>
+                    </ul>
                 </li>
 
 
@@ -108,39 +116,81 @@ if (isset($this->session->userdata['logged_in'])) {
 
         <div class="body">
             <div class="row interest">
-                <div class="col-md-2">
-                    <div class="list-group">
-                        <a class="list-group-item active" href="#">个人信息</a>
-                        <a class="list-group-item" href="#">修改密码</a>
-                    </div>
-                </div>
+
                 <div class="user-info-setting">
-                    <div class="col-md-5 col-sm-10 col-xs-10"">
+                    <div class="col-md-3 dol-sm-2 col-xs-10">
+                        <a href="#"><img src="<?php echo base_url()?>assets/images/users/6.jpg" class="img-responsive"></a>
+                    </div>
+                    <div class="col-md-9 col-sm-10 col-xs-10 setting">
                         <fieldset>
-                            <legend>个人信息
-                                <button class="btn btn-primary" id="user-info-edit">修改</button></legend>
-                            <form id="user-info-box">
-                                <p class="user-info">用户名：<span><?php echo $username?></span></p>
-                                <p class="user-info">
-                                    性别：<span>请设置</span>
-                                </p>
-                                <p class="user-info">
-                                    所在城市：<span>请设置</span>
-                                </p>
-                            </form>
+                            <legend>个人信息</legend>
+                            <div id="user-info-box">
 
+                                <p class="user-info" id="username">
+                                    用户名：<span><?php echo $userInfo['username']?></span>
+                                </p>
+                                <p class="user-info" id="sex">
+                                    性别：<span>
+                                        <?php
+                                        $sex = $userInfo['sex'];
+                                        if($sex==null){
+                                            echo "未设置";
+                                        }else{
+                                            echo $sex;
+                                        }
+                                        ?></span>
+                                </p>
+                                <p class="user-info" id="city">
+                                    所在城市：<span>
+                                        <?php
+                                        $city = $userInfo['cityid'];
+                                        if($city==null){
+                                            echo "未设置";
+                                        }else{
+                                            echo $city;
+                                        }?></span>
+                                </p>
+                                <button class="btn btn-primary" id="user-info-edit">修改</button>
+                            </div>
+                            <div id="user-info-edit-box" style="display:none">
+                                <?php echo form_open('user_authentication/user_info_edit');
+                                echo "<div class='error-message'>".validation_errors()."</div>";?>
+                                <p class="user-info" id="userid" style="display: none">
+                                    <input type="text" name="userid" value="<?php echo $userInfo['userid']?>" />
+                                </p>
+                                <p class="user-info" id="username">
+                                    用户名：<input type="text" class="form-control" name="username" placeholder="<?php echo $username?>">
+                                </p>
+                                <p class="user-info form-group" id="sex">
+                                    性别：
+                                    <label class="radio-inline">
+                                        <input type="radio" name="sex" value="男">男
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="sex" value="女">女
+                                    </label>
 
+                                </p>
+                                <p class="user-info" id="city">
+                                    所在城市：<input type="text" class="form-control" name="city">
+                                </p>
+                                <button class="btn btn-primary" id="cancelbttn">取消更改</button>
+                                <input type="submit" class="btn btn-primary" value="保存更改" name="submit">
+                                <?php echo form_close()?>
+                            </div>
                         </fieldset>
 
                     </div>
 
-                    <div class="col-md-5 col-sm-10 col-xs-10">
-                        <fieldset>
-                            <legend>头像
-                            <button class="btn btn-primary" id="upload">上传</button></legend>
-                            <img src="<?php echo base_url()?>assets/images/users/6.jpg">
-                        </fieldset>
-                    </div>
+<!--                    <div class="col-md-5 col-sm-10 col-xs-10">-->
+<!--                        <fieldset>-->
+<!--                            <legend>头像-->
+<!--                                <button class="btn btn-primary" id="upload">上传</button></legend>-->
+<!--                            <img src="--><?php //echo base_url()?><!--assets/images/users/6.jpg">-->
+<!--                        </fieldset>-->
+<!--                    </div>-->
+
+
                 </div>
 
 
@@ -168,10 +218,29 @@ if (isset($this->session->userdata['logged_in'])) {
 <script type="text/javascript" src="<?=base_url();?>assets/js/scripts.js"></script>
 
 <script type="text/javascript">
+//    $(document).ready(function(){
+//        $('#user-info-edit').click(function(){
+//            var user_info = $('#user-info-box');
+//            var html='<form>';
+//            html+="<p><label>用户名：</label><input type='text' placeholder='张耳朵' /></p>" +
+//                "<p><label>性别：</label><input type='radio' name='sex' value='男' />男<input type='radio' name='sex' value='女' />女</p>" +
+//                "<p><label>城市：</label><input type='text' /></p></form>";
+//            user_info.html(html);
+//
+//        });
+//    });
+
     $(document).ready(function(){
         $('#user-info-edit').click(function(){
-            var
+            $('#user-info-box').css("display","none");
+            $('#user-info-edit-box').css("display","block");
         });
+
+        $('#cancelbttn').click(function(){
+            $('#user-info-box').css("display","block");
+            $('#user-info-edit-box').css("display","none");
+        });
+
     });
 </script>
 </body>

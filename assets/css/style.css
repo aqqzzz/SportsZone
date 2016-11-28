@@ -173,6 +173,12 @@ img::-moz-selection {
     color: white;
     background: transparent;
 }
+
+.form-control{
+    display:inline-block;
+    width: auto;
+}
+
 body {
     webkit-tap-highlight-color: #222222;
 }

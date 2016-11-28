@@ -90,6 +90,7 @@ class user_authentication extends CI_Controller {
                 $result = $this->login_database->read_user_information($username);
 
                     $session_data = array(
+                        'userid'=>$result->userid,
                         'username'=>$result->username,
                         'avatar'=>$result->avatar,
                         'sex'=>$result->sex,
@@ -118,7 +119,24 @@ class user_authentication extends CI_Controller {
     }
 
     //个人信息设置
-    public function user_info_setting(){
-        $this->load->view('admin/user_setting');
+    public function user_info_setting($username){
+
+        $result = $this->login_database->read_user_information($username);
+        if($result!=false){
+            $data['userInfo'] = array(
+                'userid'=>$result->userid,
+                'username'=>$result->username,
+                'avatar'=>$result->avatar,
+                'sex'=>$result->sex,
+                'cityid'=>$result->cityid
+            );
+            $this->load->view('admin/user_setting',$data);
+        }
+
+    }
+
+    //修改个人信息
+    public function user_info_edit(){
+
     }
 }
