@@ -5,7 +5,6 @@
  * Date: 2016/11/12 0012
  * Time: 20:31
  */
-
 class user_authentication extends CI_Controller {
 
     public function __construct()
@@ -120,7 +119,7 @@ class user_authentication extends CI_Controller {
 
     //个人信息设置
     public function user_info_setting($username){
-
+        //echo $username;
         $result = $this->login_database->read_user_information($username);
         if($result!=false){
             $data['userInfo'] = array(
@@ -138,5 +137,15 @@ class user_authentication extends CI_Controller {
     //修改个人信息
     public function user_info_edit(){
 
+        $id = $this->input->post('userid');
+
+        $data = array(
+            'username' => $this->input->post('username'),
+            'sex'=> $this->input->post('sex'),
+            'cityid'=>$this->input->post('city')
+        );
+
+        $this->login_database->update_user_information($id,$data);
+        $this->user_info_setting($data['username']);
     }
 }

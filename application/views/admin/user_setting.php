@@ -118,10 +118,13 @@ header("Content-Type: text/html; charset=utf-8");
             <div class="row interest">
 
                 <div class="user-info-setting">
-                    <div class="col-md-3 dol-sm-2 col-xs-10">
-                        <a href="#"><img src="<?php echo base_url()?>assets/images/users/6.jpg" class="img-responsive"></a>
+                    <div class="col-md-offset-1 col-md-2 col-sm-2 col-xs-10">
+                        <div class="list-group">
+                            <a class="list-group-item active" href="#">个人信息</a>
+                            <a class="list-group-item" href="#">修改密码</a>
+                        </div>
                     </div>
-                    <div class="col-md-9 col-sm-10 col-xs-10 setting">
+                    <div class="col-md-7 col-sm-10 col-xs-10 setting">
                         <fieldset>
                             <legend>个人信息</legend>
                             <div id="user-info-box">
@@ -174,11 +177,19 @@ header("Content-Type: text/html; charset=utf-8");
                                 <p class="user-info" id="city">
                                     所在城市：<input type="text" class="form-control" name="city">
                                 </p>
-                                <button class="btn btn-primary" id="cancelbttn">取消更改</button>
+
                                 <input type="submit" class="btn btn-primary" value="保存更改" name="submit">
                                 <?php echo form_close()?>
+                                <button class="btn btn-primary" id="cancelbttn">取消更改</button>
                             </div>
                         </fieldset>
+
+                        <filedset style="display:none">
+                            <legend>修改密码</legend>
+                            <div class="user-pwd-box">
+
+                            </div>
+                        </filedset>
 
                     </div>
 
