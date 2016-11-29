@@ -89,6 +89,9 @@ if(isset($this->session->userdata['logged_in'])){
 <script src="<?=base_url();?>assets/vendor/jquery/jquery.min.js"></script>
 <script src="<?=base_url();?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+
 
 <script src="<?=base_url();?>assets/vendor/supersized/supersized.3.2.7.min.js"></script>
 <script src="<?=base_url();?>assets/vendor/supersized/supersized-init.js"></script>

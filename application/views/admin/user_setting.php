@@ -226,6 +226,9 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script src="<?=base_url();?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+
 <!-- Plugin JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="<?=base_url();?>assets/vendor/scrollreveal/scrollreveal.min.js"></script>
