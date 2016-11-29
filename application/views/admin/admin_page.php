@@ -88,7 +88,7 @@ header("Content-Type: text/html; charset=utf-8");
                 </li>
 
                 <li>
-                    <a href="<?php echo site_url()."user_authentication/user_info_setting/".$username?>"><i class="fa fa-cog"></i></a>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
                 </li>
 
 

@@ -15,6 +15,15 @@ class Db_model extends CI_Model {
 
     public function get_data(){
         $query = $this->db->get('user');
-        return $query->result_array();
+        return $query->result();
+    }
+
+    public function update($id, $data){
+
+        $query=$this->db->query("select * from user WHERE userid='".$id."'");
+        echo "<br />";
+        echo $query->num_rows();
+        echo "<br />";
+        $this->db->update('user',$data);
     }
 }

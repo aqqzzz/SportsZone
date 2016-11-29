@@ -118,9 +118,13 @@ class user_authentication extends CI_Controller {
     }
 
     //个人信息设置
-    public function user_info_setting($username){
+    public function user_info_setting(){
         //echo $username;
+        $username = $this->session->userdata['logged_in']['username'];
+        $username=urldecode($username);
+        echo($username);
         $result = $this->login_database->read_user_information($username);
+
         if($result!=false){
             $data['userInfo'] = array(
                 'userid'=>$result->userid,
@@ -130,22 +134,153 @@ class user_authentication extends CI_Controller {
                 'cityid'=>$result->cityid
             );
             $this->load->view('admin/user_setting',$data);
+
         }
 
     }
 
-    //修改个人信息
-    public function user_info_edit(){
+    public function user_info_get($username){
+        $username=urldecode($username);
+        $result = $this->login_database->read_user_information($username);
 
-        $id = $this->input->post('userid');
+        if($result!=false){
+            $data = array(
+                'userid'=>$result->userid,
+                'username'=>$result->username,
+                'avatar'=>$result->avatar,
+                'sex'=>$result->sex,
+                'cityid'=>$result->cityid
+            );
+
+            $this->session->set_userdata('logged_in',$data);
+
+            echo json_encode($data);
+        }
+    }
+
+    public function show_edit(){
+        $this->load->view('admin/user_setting_edit');
+    }
+
+    //修改个人信息
+    public function user_info_edit($id){
+
+
+        $sex = $this->input->post('sex');
+        if($sex=='男'){
+            $sex=1;
+        }else if($sex=='女'){
+            $sex=0;
+        }else{
+            $sex=null;
+        }
 
         $data = array(
+            'userid'=>$id,
             'username' => $this->input->post('username'),
-            'sex'=> $this->input->post('sex'),
+            'sex'=> $sex,
             'cityid'=>$this->input->post('city')
         );
 
-        $this->login_database->update_user_information($id,$data);
-        $this->user_info_setting($data['username']);
+        $updateSuccess=$this->login_database->update_user_information($id,$data);
+        if($updateSuccess==FALSE){
+            echo "update falied";
+        }else if($updateSuccess==TRUE){
+
+            $username=$this->input->post('username');
+
+            $result = $this->login_database->read_user_information($username);
+
+            $session_data = array(
+                'userid'=>$id,
+                'username'=>$result->username,
+                'avatar'=>$result->avatar,
+                'sex'=>$result->sex,
+                'cityid'=>$result->cityid
+            );
+
+            $this->session->set_userdata('logged_in',$session_data);
+
+//            $this->user_info_setting($data['username']);
+            echo json_encode($data);
+        }
     }
+
+    public function show_reset_pwd(){
+        $this->load->view('admin/user_reset_pwd');
+    }
+
+    //修改密码
+    public function reset_pwd(){
+//        $id = ($this->session->userdata['logged_in']['userid']);
+//        $username = ($this->session->userdata['logged_in']['username']);
+
+        $config = array(
+                array(
+                    'field'=>'old_pwd',
+                    'label'=>'old_pwd',
+                    'rules'=>'trim|required|xss_clean',
+                    'errors'=>array(
+                        'required'=>'请填写原密码',
+                    ),
+                ),
+                array(
+                    'field'=>'new_pwd',
+                    'label'=>'new_pwd',
+                    'rules'=>'trim|required|xss_clean',
+                    'errors'=>array(
+                        'required'=>'请填写新密码',
+                    ),
+                ),
+                array(
+                    'field'=>'new_pwd_affirm',
+                    'label'=>'new_pwd_affirm',
+                    'rules'=>'required|matches[new_pwd]',
+                    'errors'=>array(
+                        'required'=>'请填写确认密码',
+                        'matches'=>'确认密码与原密码不匹配！',
+                    ),
+                ),
+        );
+
+
+        $this->form_validation->set_rules($config);
+        if($this->form_validation->run()==FALSE){
+            $this->load->view('admin/user_reset_pwd');
+        }else{
+//            $id = $this->input->post('userid');
+//            $username = $this->input->post('username');
+            $id = ($this->session->userdata['logged_in']['userid']);
+            $username = ($this->session->userdata['logged_in']['username']);
+
+
+            $old_pwd = $this->input->post('old_pwd');
+            $new_pwd = $this->input->post('new_pwd');
+
+            $result = $this->login_database->read_user_information($username);
+            if($result->password == $old_pwd){
+                $data = array(
+                    'userid'=>$id,
+                    'username'=>$username,
+                    'password'=>$new_pwd
+                );
+
+
+                $this->login_database->update_user_information($id,$data);
+
+                $this->logout();
+
+            }else {
+                $data = array(
+                    'error_message'=>'原密码错误'
+                );
+                $this->load->view('admin/user_reset_pwd',$data);
+                return false;
+            }
+
+        }
+    }
+
+
+
 }

@@ -12,9 +12,36 @@ class Dbtest extends CI_Controller {
     }
 
     function index(){
-        $this->load->model('Db_model');
-        $news = $this->Db_model->get_data();
-        $data['users'] = $news;
-        $this->load->view('show',$data);
+        $this->load->model('db_model');
+        $users = $this->db_model->get_data();
+        foreach($users as $user){
+            echo $user->username;
+
+            $name = $user->username;
+            $id = $user->userid;
+            $password = $user->password;
+            $avatar = $user->avatar;
+            $sex = $user->sex;
+            $city = $user->cityid;
+        }
+
+        $data = array(
+            'username'=>'啊扣扣',
+            'password'=>$password,
+            'avatar'=>$avatar,
+            'sex'=>$sex,
+            'cityid'=>$city
+        );
+
+        $this->db_model->update($id,$data);
+        $users = $this->db_model->get_data();
+        foreach($users as $user){
+            echo $user->username;
+        }
+
+
+
+
     }
+
 }

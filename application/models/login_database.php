@@ -53,11 +53,13 @@ class login_database extends CI_Model {
     }
 
     //更新用户信息
-    public function update_user_information($userid,$data){
+    public function update_user_information($userid,$data)
+    {
         $query = $this->db->where('userid',$userid);
-        $query = $this->db->query('SELECT * FROM user WHERE username="'.$data['username'].'"');
+        $query = $this->db->query('SELECT * FROM user WHERE username="'.$data['username'].'" and userid <> "'.$userid.'"');
         if($query->num_rows()==0) {
             return $this->db->update('user', $data);
         }
+//        return $this->db->replace('user', $data);
     }
 }

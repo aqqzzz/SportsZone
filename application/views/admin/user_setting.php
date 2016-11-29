@@ -81,7 +81,7 @@ header("Content-Type: text/html; charset=utf-8");
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="#page-top">User</a>
+                    <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
                 </li>
 
                 <li>
@@ -121,7 +121,7 @@ header("Content-Type: text/html; charset=utf-8");
                     <div class="col-md-offset-1 col-md-2 col-sm-2 col-xs-10">
                         <div class="list-group">
                             <a class="list-group-item active" href="#">个人信息</a>
-                            <a class="list-group-item" href="#">修改密码</a>
+                            <a class="list-group-item" href="<?php echo site_url()."user_authentication/show_reset_pwd"?>">修改密码</a>
                         </div>
                     </div>
                     <div class="col-md-7 col-sm-10 col-xs-10 setting">
@@ -136,9 +136,15 @@ header("Content-Type: text/html; charset=utf-8");
                                     性别：<span>
                                         <?php
                                         $sex = $userInfo['sex'];
-                                        if($sex==null){
+
+                                        if($sex===null){
                                             echo "未设置";
                                         }else{
+                                            if($sex==1){
+                                                $sex='男';
+                                            }else{
+                                                $sex='女';
+                                            }
                                             echo $sex;
                                         }
                                         ?></span>
@@ -156,31 +162,31 @@ header("Content-Type: text/html; charset=utf-8");
                                 <button class="btn btn-primary" id="user-info-edit">修改</button>
                             </div>
                             <div id="user-info-edit-box" style="display:none">
-                                <?php echo form_open('user_authentication/user_info_edit');
+                                <?php echo form_open('user_authentication/user_info_edit/'.$userInfo['userid']);
                                 echo "<div class='error-message'>".validation_errors()."</div>";?>
                                 <p class="user-info" id="userid" style="display: none">
-                                    <input type="text" name="userid" value="<?php echo $userInfo['userid']?>" />
+                                    <input type="text" name="userid" value="<?php echo $userInfo['userid']?>" /><?php echo $userInfo['userid']?>
                                 </p>
-                                <p class="user-info" id="username">
-                                    用户名：<input type="text" class="form-control" name="username" placeholder="<?php echo $username?>">
+                                <p class="user-info">
+                                    用户名：<input type="text"  id="username" class="form-control" name="username" placeholder="<?php echo $userInfo['username']?>">
                                 </p>
                                 <p class="user-info form-group" id="sex">
                                     性别：
                                     <label class="radio-inline">
-                                        <input type="radio" name="sex" value="男">男
+                                        <input type="radio" name="sex" value="男" id="male">男
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="sex" value="女">女
+                                        <input type="radio" name="sex" value="女" id="female">女
                                     </label>
 
                                 </p>
-                                <p class="user-info" id="city">
-                                    所在城市：<input type="text" class="form-control" name="city">
+                                <p class="user-info">
+                                    所在城市：<input type="text"  id="city" class="form-control" name="city">
                                 </p>
-
-                                <input type="submit" class="btn btn-primary" value="保存更改" name="submit">
+                                <button type="reset" class="btn btn-primary" id="cancelbttn">取消更改</button>
+                                <input type="submit" class="btn btn-primary submit" value="保存更改" name="submit">
                                 <?php echo form_close()?>
-                                <button class="btn btn-primary" id="cancelbttn">取消更改</button>
+
                             </div>
                         </fieldset>
 
@@ -242,14 +248,94 @@ header("Content-Type: text/html; charset=utf-8");
 //    });
 
     $(document).ready(function(){
+
+
+
         $('#user-info-edit').click(function(){
-            $('#user-info-box').css("display","none");
-            $('#user-info-edit-box').css("display","block");
+            var user_name = $('div#user-info-box #username span').html();
+
+            $.ajax({
+                type:"GET",
+                url:"<?php echo base_url()."user_authentication/user_info_get/"?>"+user_name,
+                dataType:'json',
+                data:{username:user_name},
+                success: function(result){
+
+                    if(result){
+                        $('#user-info-box').css("display","none");
+                        $('#user-info-edit-box').css("display","block");
+
+                        var select = result.sex;
+
+                        if(select==0){
+                            $('input#female').attr("checked","checked");
+                            $('input#male').removeAttr('checked');
+
+
+                        }else if(select==1){
+                            $('input#male').attr('checked','checked');
+                            $('input#female').removeAttr('checked');
+
+                        }else{
+                            $('input#male').removeAttr('checked');
+                            $('input#female').removeAttr('checked');
+
+                        }
+
+                        $('input#username').attr('placeholder',result.username);
+                        $('input#username').val("");
+
+
+                    }
+                }
+            });
+
+
+
+
         });
 
         $('#cancelbttn').click(function(){
             $('#user-info-box').css("display","block");
             $('#user-info-edit-box').css("display","none");
+        });
+
+
+        $('.submit').click(function(){
+            event.preventDefault();
+            var user_name=$("input#username").val();
+
+
+            var val=$('input:radio[name="sex"]:checked').val();
+
+            var sex=val;
+            var city = $("input#city").val();
+
+            jQuery.ajax({
+                type:"POST",
+                url:"<?php echo base_url()."user_authentication/user_info_edit/".$userInfo['userid'];?>",
+                dataType:'json',
+                data:{username:user_name, sex:sex, city:city},
+                success: function(result){
+
+                    if(result){
+                        $("div#user-info-box").css("display","block");
+                        $("div#user-info-edit-box").css("display","none");
+
+                        $("div#user-info-box #username span").html(result.username);
+
+                        var returnSex = result.sex;
+                        if(returnSex==0){
+                            returnSex = '女';
+                        }else if(returnSex==1){
+                            returnSex = '男';
+                        }
+
+                        $("div#user-info-box #sex span").html(returnSex);
+                        $("div#user-info-box #city span").html(result.cityid);
+                    }
+                }
+            });
         });
 
     });
