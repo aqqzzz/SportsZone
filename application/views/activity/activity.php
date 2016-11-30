@@ -104,30 +104,25 @@ header("Content-Type: text/html; charset=utf-8");
     </div>
 </header>
 
-<section id="search" class="container">
-    <div class="search-box text-center">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-2">
-                <input type="text" class="form-control" placeholder="我想找...">
-                <button class="btn btn-default"><i class="fa fa-search"></i></button>
-            </div>
 
-        </div>
-
-    </div>
-
-</section>
 
 <section id="activity-info">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2 col-md-offset-1" id="guiding">
                 <div class="list-group hidden-sm hidden-xs">
-                    <a href="#" class="list-group-item active">单人PK</a>
-                    <a href="#" class="list-group-item">多人竞赛</a>
-                    <a href="#" class="list-group-item">小组活动</a>
-                    <a href="#" class="list-group-item my-activity">我的活动</a>
-                    <a href="create-activity.html" class="list-group-item"><i class="fa fa-plus-circle"></i>创建活动</a>
+                    <h2>竞赛</h2>
+                    <hr>
+                    <a href="<?php echo site_url()."activity/show_all_act/0/1"?>" class="list-group-item total-act" id="t0">单人PK</a>
+                    <a href="<?php echo site_url()."activity/show_all_act/1/1"?>" class="list-group-item total-act" id="t1">多人竞赛</a>
+                    <h2>接力</h2>
+                    <hr>
+                    <a href="<?php echo site_url()."activity/show_all_act/2/1"?>" class="list-group-item total-act" id="t2">小组活动</a>
+                    <h2>我的</h2>
+                    <hr>
+                    <a href="#" class="list-group-item my-activity">我参加的</a>
+                    <a href="#" class="list-group-item my-activity">我发起的</a>
+                    <a href="<?php echo site_url()."activity/create_activity"?>" class="list-group-item"><i class="fa fa-plus-circle"></i>创建活动</a>
                 </div>
 
                 <div class="visible-sm visible-xs">
@@ -146,6 +141,20 @@ header("Content-Type: text/html; charset=utf-8");
 
             <div class="col-sm-12 col-md-8 col-lg-8" id="portfolio-box-content">
 
+                <section id="search" class="container">
+                    <div class="search-box text-center">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-2">
+                                <input type="text" class="form-control" placeholder="我想找...">
+                                <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
                 <?php foreach($actItem as $item):?>
                     <div class="col-sm-6 col-md-6 portfolio-box">
                         <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>">
@@ -154,9 +163,26 @@ header("Content-Type: text/html; charset=utf-8");
                         <h3>
                             <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>"><?php echo $item->activityname?></a>
                         </h3>
+                        <p class="act-type">
+                        <?php
+                            $type = $item->type;
+                            if($type==0){
+                                $type = '单人PK';
+                            }else if($type==1){
+                                $type = '多人竞赛';
+                            }else if($type==2){
+                                $type = '小组活动';
+                            }
+
+                            echo $type;
+
+                        ?>
+                        </p>
                         <p class="des-content">
                             <?php echo $item->description;?>
                         </p>
+                        <button class="btn btn-primary" id="查看详情" onclick='window.location="<?php echo site_url()."activity/get_single_act/".$item->activityid;?>"'>查看详情</button>
+
                     </div>
 
                 <?php endforeach; ?>
@@ -168,14 +194,12 @@ header("Content-Type: text/html; charset=utf-8");
                 <div class="col-lg-12">
                     <ul class="pagination">
                         <li>
-                            <a href="#">&laquo;</a>
+                            <a href="<?php echo site_url()."activity/show_all_act/".$actType."/".($current_page-1);?>">&laquo;</a>
                         </li>
                         <?php
                             for($i=1; $i<=$page_num; $i++){
 
                                 echo "<li>";
-
-                                echo $actType;
                                 echo "<a href='".site_url()."activity/show_all_act/".$actType."/".$i."' id='".$i."''>";
                                 echo $i;
                                 echo "</a>";
@@ -184,7 +208,7 @@ header("Content-Type: text/html; charset=utf-8");
 
                         ?>
                         <li>
-                            <a href="#">&raquo;</a>
+                            <a href="<?php echo site_url()."activity/show_all_act/".$actType."/".($current_page+1);?>">&raquo;</a>
                         </li>
                     </ul>
                 </div>
@@ -223,11 +247,47 @@ header("Content-Type: text/html; charset=utf-8");
         var pages = <?php echo $page_num?>;
         $(".pagination a#"+currentPage).attr("class","active");
 
+        var type = <?php echo $actType?>;
+        switch(type){
+            case 0: type="t0";break;
+            case 1: type="t1";break;
+            case 2: type="t2";break;
+            default: type=null;break;
+        }
+
+//        $("#guiding .total-act").click(function(){
+//            if(type!=null){
+//                var old_class = $("#"+type).attr("class");
+//                old_class += " active";
+//                $("#"+type).attr("class",old_class);
+//                $("#"+type).attr("href","#");
+//            }
+//
+//            for(var i = 1; i < pages; i++){
+//                if(i!=currentPage){
+//                    $(".pagination a#"+i).removeAttr("class");
+//                }
+//            }
+            //点击不同的竞赛类型，应该使用ajax发送请求
+//            $.ajax({
+//                type:"GET",
+//                url:<?php //echo site_url()."activity/?>"
+//            });
+//        });
+
+        if(type!=null){
+            var old_class = $("#"+type).attr("class");
+            old_class += " active";
+            $("#"+type).attr("class",old_class);
+            $("#"+type).attr("href","#");
+        }
+
         for(var i = 1; i < pages; i++){
             if(i!=currentPage){
                 $(".pagination a#"+i).removeAttr("class");
             }
         }
+
 
     })
 </script>

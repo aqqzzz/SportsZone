@@ -223,20 +223,29 @@ section {
 
 }
 
+#activity #activity-info .portfolio-box h3{
+
+}
+
+#activity #activity-info .portfolio-box .act-type{
+
+    /*float:right;*/
+    max-width: 100px;
+    background-color: #f05f40;
+    padding: 5px 5px;
+    color:white;
+}
+
 #activity #activity-info .portfolio-box .des-content{
     float:left;
     height: 3em;
-    margin-right:3em;
+    margin-right:1em;
     overflow: hidden;
 }
 
-#activity #activity-info .portfolio-box .des-dotted{
-    width:3em;
-    height: 3em;
+#activity #activity-info .portfolio-box button{
     float:right;
-    margin-top: -3em;
-    right:0px;
-    bottom:0px;
+    top:0;
 }
 
 
@@ -246,9 +255,14 @@ section {
     font-family: "Microsoft YaHei UI","微软雅黑",Arial,sans-serif;
 }
 
-#guiding .list-group {
-
+#guiding a.list-group-item {
+    margin-left:20px;
 }
+
+#guiding hr{
+    max-width:100%;
+}
+
 
 
 .list-group .active, .list-group-item.active {
@@ -259,7 +273,7 @@ section {
 .list-group a:hover, .list-group-item.active:hover {
     background-color: #f0ad4e;
     color: whitesmoke;
-    border: #f0ad4e;
+    border: 1px solid #f0ad4e;
     -webkit-transition:  0.35s;
     -moz-transition:  0.35s;
     -ms-transition:  0.35s;
@@ -304,6 +318,9 @@ li.active a{
     padding-bottom: 0px;
     padding-left: 25px;
     padding-right: 25px;
+
+    margin-bottom:10px;
+
 }
 
 #search .search-box {
@@ -316,7 +333,8 @@ li.active a{
     width: 90%;
 }
 
-#search .search-box .form-control:focus {
+/*#search .search-box .form-control:focus {*/
+.form-control:focus {
     border-color: #f05f40;
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 99, 71, .6);
@@ -415,14 +433,19 @@ li.active a{
 #single-activity #activity-info .activity-info-box{
     padding-left: 25px;
 }
-
-
-
-#single-activity #activity-info button {
-    position: absolute;
-    color: #f05f40;
+#single-activity #activity-info span.button_panel {
+    position:absolute;
     top:15px;
     right:15px;
+}
+
+#single-activity #activity-info button {
+
+    color: #f05f40;
+    border:1px solid #f05f40;
+    margin:auto 5px;
+
+    float:right;
 }
 
 #single-activity #activity-info button:hover {

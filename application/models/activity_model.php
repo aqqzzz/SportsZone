@@ -25,19 +25,23 @@ class activity_model extends CI_Model {
         }
     }
 
-    public function get_activities($type,$pagenum){
-        $start = ($pagenum-1)*6;
-        $end = $start+6;
-        if($type===-1){
-            $result = $this->db->query("select * from activity WHERE activityid >'".$start."' and activityid <='".$end."'");
+    public function get_activities($type,$pagenum,$per_page){
 
-            echo $result->num_rows();
+        $start = ($pagenum-1)*$per_page;
+        $end = $start+$per_page;
+        $total_records = $this->get_pages($type);
+
+        if($end>$total_records){
+            $end = $total_records;
+        }
+
+        if($type==-1){
+            $result = $this->db->query("select * from activity limit ".$start.",".$end);
+
 
             return $result->result();
         }else{
-            $result = $this->db->query("select * from activity WHERE type='".$type."' and activityid >'".$start."' and activityid <='".$end."'");
-
-            echo $result->num_rows();
+            $result = $this->db->query("select * from activity WHERE type=".$type." limit ".$start.",".$end);
 
             return $result->result();
         }
@@ -61,13 +65,18 @@ class activity_model extends CI_Model {
 //    }
 
     public function get_pages($type){
-        if($type===-1){
+        if($type==-1){
             $result = $this->db->query("select * from activity");
             return $result->num_rows();
         }else{
             $result = $this->db->query("select * from activity WHERE type='".$type."'");
             return $result->num_rows();
         }
+    }
+
+    public function delete($id){
+        $this->db->where("activityid",$id);
+        $this->db->delete('activity');
     }
 
 }

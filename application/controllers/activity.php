@@ -12,6 +12,8 @@ class activity extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('activity_model');
+        $this->load->model('parti_act_model');
+        $this->load->model('login_database');
         $this->load->library('pagination');
     }
 
@@ -165,10 +167,26 @@ class activity extends CI_Controller {
                 'description'=>$result->description,
                 'des_image'=>$result->des_image
             );
+            $data['partiInfo'] = $this->parti_act_model->get_by_activity($result->activityid);
 
             $this->load->view('activity/single_activity',$data);
         }
     }
+
+//    public function get_all_act($type=-1,$page_num=1){
+//        $per_page = 6;
+//
+//        $data['actItem'] = $this->activity_model->get_activities($type,$page_num,$per_page);
+//        if(empty($data['actItem'])){
+//            return false;
+//        }
+//        $data['actType']=$type;
+//        $data['page_num'] = $this->page_seg($type);
+//        $data['current_page'] = $page_num;
+////
+//
+//        $this->load->view('activity/activity',$data);
+//    }
 
     public function show_all_act($type=-1,$page_num=1){
 
@@ -196,24 +214,57 @@ class activity extends CI_Controller {
 //        $data['links'] = explode('&nbsp',$str_links);
 //        $data['actType'] = $type;
 //        $data['page_num'] = $this->page_seg($type);
+        $per_page = 6;
 
-        $data['actItem'] = $this->activity_model->get_activities($type,$page_num);
+        $data['actItem'] = $this->activity_model->get_activities($type,$page_num,$per_page);
         if(empty($data['actItem'])){
             return false;
         }
         $data['actType']=$type;
         $data['page_num'] = $this->page_seg($type);
         $data['current_page'] = $page_num;
-//
+
+
+
         $this->load->view('activity/activity',$data);
     }
 
     public function page_seg($type=-1){
         $result_num = $this->activity_model->get_pages($type);
-        $pages = $result_num/6;
-        if($result_num%6!=0){
-            $pages = $pages+1;
-        }
+        $pages = ceil($result_num/6);
+        echo $result_num/6;
+        echo "<br />";
+        echo $pages;
         return $pages;
+    }
+
+    public function delete_act($activityid){
+        $this->activity_model->delete($activityid);
+        $this->parti_act_model->delete_by_act($activityid);
+
+        $this->show_all_act();
+    }
+
+    //获取活动的全部参与者信息
+    public function get_parti($activityid){
+        $data = $this->parti_act_model->get_by_activity($activityid);
+
+        return $data;
+    }
+    //退出活动
+    public function exit_activity($userid,$activityid){
+        $this->parti_act_model->delete($userid,$activityid);
+        $this->show_all_act();
+    }
+
+    //参加活动
+    public function parti_activity($userid,$activityid){
+        $data = array(
+            'participantid'=>$userid,
+            'activityid'=>$activityid
+        );
+        $this->parti_act_model->insert($data);
+
+        $this->get_single_act($activityid);
     }
 }

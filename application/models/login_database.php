@@ -46,7 +46,7 @@ class login_database extends CI_Model {
             $insert_data = array(
                 'username'=>$data['username'],
                 'password'=>$data['password'],
-                'avatar'=>'123123'
+                'avatar'=>$data['avatar']
             );
             return $result = $this->db->insert('user',$insert_data);
         }

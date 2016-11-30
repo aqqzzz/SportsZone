@@ -159,7 +159,7 @@ header("Content-Type: text/html; charset=utf-8");
                         </p>
                         <p class="central-sub-btn">
                             <input type="submit" class="form-control btn btn-primary" name="submit" value="发布">
-                            <input type="reset" class="btn btn-default" name="cancel" id="cancel" value="取消">
+                            <input type="reset" class="btn btn-default" name="cancel" id="cancel" value="取消" onclick="window.location='<?php echo site_url()."activity/show_all_act/"."-1/1"?>'">
                         </p>
 
                         <?php echo form_close()?>
@@ -212,9 +212,7 @@ header("Content-Type: text/html; charset=utf-8");
             }
         });
 
-        $('input#cancel').click(function(){
 
-        });
     });
 </script>
 </body>

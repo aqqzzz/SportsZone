@@ -43,7 +43,8 @@ class user_authentication extends CI_Controller {
         }else{
             $data = array(
                 'username'=>$this->input->post('username'),
-                'password'=>$this->input->post('password')
+                'password'=>$this->input->post('password'),
+                'avatar'=>base_url()."assets/images/users/6.jpg"
             );
             $result = $this->login_database->registration_insert($data);
             if($result==TRUE){

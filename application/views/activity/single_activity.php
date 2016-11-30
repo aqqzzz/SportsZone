@@ -105,8 +105,11 @@ header("Content-Type: text/html; charset=utf-8");
 <section id="activity-info">
     <div class="container">
         <h1><?php echo $actInfo['activityname']?></h1>
+        <span class="button_panel">
+            <button class="btn btn-default" id="create"><i class="fa fa-plus-circle fa-2x"></i>创建活动</button>
+        </span>
 
-        <button class="btn btn-default" id="create"><i class="fa fa-plus-circle fa-2x"></i>创建活动</button>
+
 
 
         <ol class="breadcrumb">
@@ -154,34 +157,13 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="user-content">
             <h2>参与用户</h2>
             <div class="row" id="participaters">
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/1.jpg" class="img-responsive"></a>
-                    <p>user1</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/2.jpg" class="img-responsive"></a>
-                    <p>user2</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/3.jpg" class="img-responsive"></a>
-                    <p>user3</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/4.jpg" class="img-responsive"></a>
-                    <p>user4</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/5.jpg" class="img-responsive"></a>
-                    <p>user5</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3">
-                    <a href="user.html"><img src="images/users/6.jpg" class="img-responsive"></a>
-                    <p>user6</p>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-3" id="join">
-                    <a href="user.html"><img src="images/users/undefined.jpg" class="img-responsive"></a>
-                    <p>我要参加</p>
-                </div>
+                <?php isset($partiInfo)?>
+                <?php foreach ($partiInfo as $user):?>
+                    <div class="col-md-1 col-sm-2 col-xs-3">
+                        <a href="#"><img src="<?php echo $user->avatar?>" class="img-responsive"></a>
+                        <p><?php echo $user->username?></p>
+                    </div>
+                <?php endforeach;?>
             </div>
 
         </div>
@@ -206,5 +188,53 @@ header("Content-Type: text/html; charset=utf-8");
 
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var cur_id = <?php echo $userid?>;
+        var author_id = <?php echo $actInfo['authorid']?>;
+
+        if(cur_id==author_id){
+            var delete_bttn = $("<button class='btn btn-default' id='delete_bttn'><i class='fa fa-trash fa-2x'></i>删除活动</button>");
+            $(".button_panel").append(delete_bttn);
+
+            var edit_bttn = $("<button class='btn btn-default' id='edit_bttn'><i class='fa fa-edit fa-2x'></i>编辑活动</button>");
+            $(".button_panel").append(edit_bttn);
+        }else{
+            var is_parti = false;
+            <?php foreach ($partiInfo as $user):?>
+                if(cur_id==<?php echo $user->userid?>){
+                    is_parti = true;
+                }
+            <?php endforeach; ?>
+
+
+
+            if(is_parti){
+                var exit_bttn = $("<button class='btn btn-default' id='exit_bttn'><i class='fa fa-sign-out fa-2x'></i>退出活动</button>");
+                $(".button_panel").append(exit_bttn);
+            }else{
+                var parti_bttn = $("<button class='btn btn-default' id='parti_bttn'><i class='fa fa-sign-in fa-2x'></i>参加活动</button>");
+                $(".button_panel").append(parti_bttn);
+            }
+        }
+
+        $(document).on("click","#delete_bttn",function(){
+
+            window.location="<?php echo site_url()."activity/delete_act/".$actInfo['actid']?>";
+        });
+
+        $(document).on("click","#edit_bttn",function(){
+            window.location="<?php echo site_url()?>";
+        });
+
+        $(document).on("click","#exit_bttn",function(){
+            window.location="<?php echo site_url()."activity/exit_activity/".$userid."/".$actInfo['actid']?>";
+        });
+
+        $(document).on("click","#parti_bttn",function(){
+            window.location="<?php echo site_url()."activity/parti_activity/".$userid."/".$actInfo['actid']?>";
+        });
+    });
+</script>
 </body>
 </html>
