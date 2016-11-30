@@ -131,8 +131,10 @@ header("Content-Type: text/html; charset=utf-8");
                     <h1>创建活动</h1>
                     <hr>
                     <div id="activity-content">
-                        <?php echo form_open("activity/create_activity")?>
+                        <?php echo form_open_multipart("activity/create_activity")?>
+                        <?php echo validation_errors();?>
                         <p><label>活动名称：</label><input type="text" class="form-control" name="act-name"></p>
+
 
                         <p><label>活动类型：</label>
                             <select class="form-control" name="act-type">
@@ -151,13 +153,13 @@ header("Content-Type: text/html; charset=utf-8");
                         <p><label id="des-img">封面图片</label>
                             <input type="file" id="upload-file" name="inputfile">
                             <p id="upload-show">
-                            <img src="<?php echo base_url()?>assets/images/single-project.jpg" class="img-responsive"/>
+                            <img src="<?php echo base_url()?>assets/images/default-activity-pic.jpg" class="img-responsive" id="image_upload_show"/>
                             </p>
 
                         </p>
                         <p class="central-sub-btn">
                             <input type="submit" class="form-control btn btn-primary" name="submit" value="发布">
-                            <input type="reset" class="btn btn-default" name="cancel" value="取消">
+                            <input type="reset" class="btn btn-default" name="cancel" id="cancel" value="取消">
                         </p>
 
                         <?php echo form_close()?>
@@ -194,5 +196,26 @@ header("Content-Type: text/html; charset=utf-8");
 
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#upload-file').change(function(){
+           files = this.files;
+            if(files&&files[0]){
+                var reader = new FileReader();
+
+                reader.onload = function(e){
+                    $('#image_upload_show').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        $('input#cancel').click(function(){
+
+        });
+    });
+</script>
 </body>
 </html>

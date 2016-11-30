@@ -11,6 +11,8 @@ class activity extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('activity_model');
+        $this->load->library('pagination');
     }
 
     public function index(){
@@ -21,53 +23,121 @@ class activity extends CI_Controller {
         $this->load->view('activity/create_activity');
     }
 
+    private function do_upload(){
+        $config['upload_path']      = './assets/images/portfolio/thumbnail/';
+        $config['allowed_types']    = 'gif|jpg|png|jpeg';
+
+//        echo $config['upload_path'];
+//        die(var_dump(is_writable($config['upload_path'])));
+
+        $this->load->library('upload',$config);
+//        $this->upload->initialize($config);
+
+        if ( ! $this->upload->do_upload('inputfile'))
+        {
+            $data['img'] = base_url().'assets/images/default-activity-pic.jpg';
+
+        }
+        else
+        {
+            $file_data = array('upload_data' => $this->upload->data());
+
+            $data['img'] = base_url().'assets/images/portfolio/thumbnail/'.$file_data['upload_data']['file_name'];
+
+
+        }
+        return $data;
+
+    }
+
     //发布活动
-    public function create_act($authorid, $data){
-        $config = array(
-            array(
-              'field'=>'act-name',
-              'label'=>'act-name',
-              'rules'=>'trim|required|xss_clean',
-              'errors'=>array(
-                  'required'=>'请填写活动名称'
-              ),
-            ),
-            array(
-              'field'=>'act-type',
-              'label'=>'act-type',
-            ),
-            array(
-                'field'=>'start-time',
-                'label'=>'start-time',
-                'rules'=>'trim|required|xss_clean',
-                'errors'=>array(
-                    'required'=>'请选择开始时间',
+    public function create_activity(){
+
+        $result = $this->do_upload();
+
+            $config = array(
+                array(
+                    'field'=>'act-name',
+                    'label'=>'act-name',
+                    'rules'=>'trim|required|xss_clean',
+                    'errors'=>array(
+                        'required'=>'请填写活动名称'
+                    ),
                 ),
-            ),
-            array(
-                'field'=>'end-time',
-                'label'=>'end-time',
-                'rules'=>'trim|required|xss_clean',
-                'errors'=>array(
-                    'required'=>'请选择结束时间',
+                array(
+                    'field'=>'start-time',
+                    'label'=>'start-time',
+                    'rules'=>'trim|required|xss_clean',
+                    'errors'=>array(
+                        'required'=>'请选择开始时间',
+                    ),
                 ),
-            ),
-            array(
-                'field'=>'bonus',
-                'label'=>'bonus',
-                'rules'=>'required|callback_check_digital',
-            ),
-            array(
-                'field'=>'act-description',
-                'label'=>'act-description',
-                'rules'=>'required|min_length[8]|max_length[100]',
-                'errors'=>array(
-                  'required'=>'请添加活动简介',
-                    'min_length'=>'多说几句吧',
-                    'max_length'=>'最多100个字，您超字数啦',
+                array(
+                    'field'=>'end-time',
+                    'label'=>'end-time',
+                    'rules'=>'trim|required|xss_clean',
+                    'errors'=>array(
+                        'required'=>'请选择结束时间',
+                    ),
                 ),
-            ),
-        );
+                array(
+                    'field'=>'bonus',
+                    'label'=>'bonus',
+                    'rules'=>'required|callback_check_digital',
+                ),
+                array(
+                    'field'=>'act-description',
+                    'label'=>'act-description',
+                    'rules'=>'required|min_length[8]|max_length[100]',
+                    'errors'=>array(
+                        'required'=>'请添加活动简介',
+                        'min_length'=>'多说几句吧',
+                        'max_length'=>'最多100个字，您超字数啦',
+                    ),
+                ),
+            );
+
+            $this->form_validation->set_rules($config);
+
+
+
+
+            if($this->form_validation->run()==false){
+                $this->load->view('activity/create_activity');
+            }else{
+
+                $des_image = $result['img'];
+
+                $authorid = $this->session->userdata['logged_in']['userid'];
+                $activityname = $this->input->post('act-name');
+                $type = $this->input->post('act-type');
+                $stime = $this->input->post('start-time');
+                $etime = $this->input->post('end-time');
+                $bonus = $this->input->post('bonus');
+                $description = $this->input->post('act-description');
+
+                $type_data=array('单人PK'=>0,'多人竞赛'=>1,'小组活动'=>2);
+
+                $insert_data = array(
+                    'authorid'=>$authorid,
+                    'activityname'=>$activityname,
+                    'type'=>$type_data[$type],
+                    'start_time'=>$stime,
+                    'end_time'=>$etime,
+                    'bonus'=>$bonus,
+                    'description'=>$description,
+                    'des_image'=>$des_image,
+                );
+
+                $this->activity_model->insert($insert_data);
+
+                $data['actInfo'] = $insert_data;
+
+                $this->load->view('activity/single_activity',$data);
+            }
+
+
+
     }
 
     public function check_digital($str){
@@ -77,5 +147,73 @@ class activity extends CI_Controller {
             $this->form_validation->set_message('check_digital','请再奖励域输入数字！');
             return false;
         }
+    }
+
+    //获取某一活动的详细信息
+    public function get_single_act($id){
+        $result = $this->activity_model->read_act_info($id);
+
+        if($result!=false){
+            $data['actInfo'] = array(
+              'actid'=>$result->activityid,
+                'activityname'=>$result->activityname,
+                'authorid'=>$result->authorid,
+                'type'=>$result->type,
+                'start_time'=>$result->start_time,
+                'end_time'=>$result->end_time,
+                'bonus'=>$result->bonus,
+                'description'=>$result->description,
+                'des_image'=>$result->des_image
+            );
+
+            $this->load->view('activity/single_activity',$data);
+        }
+    }
+
+    public function show_all_act($type=-1,$page_num=1){
+
+//        $config = array();
+//        $config["base_url"] = base_url()."activity/show_all_act";
+//        $total_row = $this->activity_model->get_all_act($type)->num_rows();
+//        $config['total_rows'] = $total_row;
+//        $config['per_page'] = 6;
+//        $config['use_page_numbers'] = TRUE;
+//        $config['num_links'] = $total_row;
+//        $config['cur_tag_open'] = '&nbsp;<a class="current">';
+//        $config['cur_tag_close'] = '</a>';
+//        $config['next_link'] = '&raquo;';
+//        $config['prev_link'] = '&laquo;';
+//
+//        $this->pagination->initialize($config);
+//        if($this->uri->segment(3)){
+//            echo $this->uri->segment(3);
+//            $page = ($this->uri->segment(3));
+//        }else{
+//            $page=1;
+//        }
+//        $data['actItem'] = $this->activity_model->get_activities($config["per_page"],$page,$type);
+//        $str_links = $this->pagination->create_links();
+//        $data['links'] = explode('&nbsp',$str_links);
+//        $data['actType'] = $type;
+//        $data['page_num'] = $this->page_seg($type);
+
+        $data['actItem'] = $this->activity_model->get_activities($type,$page_num);
+        if(empty($data['actItem'])){
+            return false;
+        }
+        $data['actType']=$type;
+        $data['page_num'] = $this->page_seg($type);
+        $data['current_page'] = $page_num;
+//
+        $this->load->view('activity/activity',$data);
+    }
+
+    public function page_seg($type=-1){
+        $result_num = $this->activity_model->get_pages($type);
+        $pages = $result_num/6;
+        if($result_num%6!=0){
+            $pages = $pages+1;
+        }
+        return $pages;
     }
 }

@@ -104,7 +104,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 <section id="activity-info">
     <div class="container">
-        <h1>活动名称</h1>
+        <h1><?php echo $actInfo['activityname']?></h1>
 
         <button class="btn btn-default" id="create"><i class="fa fa-plus-circle fa-2x"></i>创建活动</button>
 
@@ -112,30 +112,36 @@ header("Content-Type: text/html; charset=utf-8");
         <ol class="breadcrumb">
             <li><a href="index.html">首页</a></li>
             <li><a href="activity.html">活动</a></li>
-            <li><a href="activity.html">多人竞赛</a></li>
-            <li class="active">活动名称</li>
+            <li><a href="activity.html">
+                    <?php
+                    $type = $actInfo['type'];
+                    switch($type){
+                        case 0:echo '单人PK';break;
+                        case 1:echo '多人竞赛';break;
+                        case 2:echo  '小组活动';break;
+                    }
+                    ?></a></li>
+            <li class="active"><?php echo $actInfo['activityname']?></li>
         </ol>
         <hr>
         <div class="row">
             <div class="col-md-8">
-                <img src="<?php echo base_url()?>assets/images/single-project.jpg" class="img-responsive">
+                <img src="<?php echo $actInfo['des_image']?>" class="img-responsive">
             </div>
 
             <div class="col-md-4 activity-info-box">
                 <h2>活动简介</h2>
-                <p>这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介
-                    这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介
-                    这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介这是活动简介</p>
+                <p><?php echo $actInfo['description']?></p>
                 <div class="activity-info-nums">
                     <div id="time-show-box">
                         <i class="fa fa-calendar fa-2x"></i>
                         <span>剩余时间：00天23小时</span>
                         <br>
-                        <span class="time" id="start-time">11-01 00:00</span>至
-                        <span class="time" id="end-time">11-30 23:00</span>
+                        <span class="time" id="start-time"><?php echo $actInfo['start_time']?></span>至
+                        <span class="time" id="end-time"><?php echo $actInfo['end_time']?></span>
                     </div>
 
-                    <i class="fa fa-trophy fa-2x"><span>奖励：18跑币</span></i>
+                    <i class="fa fa-trophy fa-2x"><span>奖励：<?php echo $actInfo['bonus']?>跑币</span></i>
                 </div>
 
             </div>

@@ -215,6 +215,32 @@ section {
     display: inline;
 
 }
+
+#activity #activity-info .portfolio-box{
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color: antiquewhite;
+
+}
+
+#activity #activity-info .portfolio-box .des-content{
+    float:left;
+    height: 3em;
+    margin-right:3em;
+    overflow: hidden;
+}
+
+#activity #activity-info .portfolio-box .des-dotted{
+    width:3em;
+    height: 3em;
+    float:right;
+    margin-top: -3em;
+    right:0px;
+    bottom:0px;
+}
+
+
+
 #guiding h4 {
     font-weight: 500;
     font-family: "Microsoft YaHei UI","微软雅黑",Arial,sans-serif;
@@ -918,6 +944,8 @@ li.active a{
     #community #content .body .card.affix .user-information h4 {
         font-size: 18px;
     }
+
+
 }
 @media (max-width: 1199px) and (min-width: 992px) {
     #single-activity .user .user-content {

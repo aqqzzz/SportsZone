@@ -138,107 +138,29 @@ header("Content-Type: text/html; charset=utf-8");
                         <li><a href="create-activity.html"><i class="fa fa-plus-circle"></i>创建活动</a></li>
                     </ul>
                 </div>
+
             </div>
 
 
 
 
-            <div id="activity-content">
+            <div class="col-sm-12 col-md-8 col-lg-8" id="portfolio-box-content">
 
-                <!--project-->
-
-                <div class="col-sm-6 col-md-4 portfolio-box">
-                    <a href="singleActivity.html">
-                        <img class="img-responsive img-hover" src="images/project.jpg" alt="">
-                    </a>
-                    <h3>
-                        <a href="singleActivity.html">Project One</a>
-                    </h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nam viverra euismod odio, gravida pellentesque urna varius vitae.
-                    </p>
-                </div>
-
-
-                <div class="col-sm-6 col-md-4 portfolio-box">
-                    <a href="singleActivity.html">
-                        <img class="img-responsive img-hover" src="images/project.jpg" alt="">
-                    </a>
-                    <h3>
-                        <a href="singleActivity.html">Project One</a>
-                    </h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nam viverra euismod odio, gravida pellentesque urna varius vitae.
-                    </p>
-                </div>
-
-                <!--end two projects-->
-
-                <!--project-->
-
-                <div class="col-sm-6 col-md-4 col-md-offset-3 col-lg-offset-3 portfolio">
-                    <a href="singleActivity.html">
-                        <img class="img-responsive img-hover" src="images/project.jpg" alt="">
-                    </a>
-                    <h3>
-                        <a href="singleActivity.html">Project One</a>
-                    </h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nam viverra euismod odio, gravida pellentesque urna varius vitae.
-                    </p>
-                </div>
-
-
-                <div class="col-sm-6 col-md-4 img-portfolio">
-                    <a href="singleActivity.html">
-                        <img class="img-responsive img-hover" src="images/project.jpg" alt="">
-                    </a>
-                    <h3>
-                        <a href="singleActivity.html">Project One</a>
-                    </h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nam viverra euismod odio, gravida pellentesque urna varius vitae.
-                    </p>
-                </div>
-
-                <!--end two projects-->
-
-                <!--project-->
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 col-md-offset-3 img-portfolio">
-                        <a href="singleActivity.html">
-                            <img class="img-responsive img-hover" src="images/project.jpg" alt="">
+                <?php foreach($actItem as $item):?>
+                    <div class="col-sm-6 col-md-6 portfolio-box">
+                        <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>">
+                            <img class="img-responsive img-hover" src="<?php echo $item->des_image?>" alt="<?php echo $item->activityname?>">
                         </a>
-
                         <h3>
-                            <a href="singleActivity.html">Project One</a>
+                            <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>"><?php echo $item->activityname?></a>
                         </h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nam viverra euismod odio, gravida pellentesque urna varius vitae.
+                        <p class="des-content">
+                            <?php echo $item->description;?>
                         </p>
                     </div>
 
+                <?php endforeach; ?>
 
-                    <div class="col-sm-6 col-md-4 img-portfolio">
-                        <a href="singleActivity.html">
-                            <img class="img-responsive img-hover" src="images/project.jpg" alt="">
-                        </a>
-
-                        <h3>
-                            <a href="singleActivity.html">Project One</a>
-                        </h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nam viverra euismod odio, gravida pellentesque urna varius vitae.
-                        </p>
-                    </div>
-                </div>
-                <!--end two projects-->
             </div>
 
             <!--底部翻页-->
@@ -248,21 +170,19 @@ header("Content-Type: text/html; charset=utf-8");
                         <li>
                             <a href="#">&laquo;</a>
                         </li>
-                        <li>
-                            <a href="#" class="active">1</a>
-                        </li>
-                        <li>
-                            <a href="#">2</a>
-                        </li>
-                        <li>
-                            <a href="#">3</a>
-                        </li>
-                        <li>
-                            <a href="#">4</a>
-                        </li>
-                        <li>
-                            <a href="#">5</a>
-                        </li>
+                        <?php
+                            for($i=1; $i<=$page_num; $i++){
+
+                                echo "<li>";
+
+                                echo $actType;
+                                echo "<a href='".site_url()."activity/show_all_act/".$actType."/".$i."' id='".$i."''>";
+                                echo $i;
+                                echo "</a>";
+                                echo "</li>";
+                            }
+
+                        ?>
                         <li>
                             <a href="#">&raquo;</a>
                         </li>
@@ -296,5 +216,20 @@ header("Content-Type: text/html; charset=utf-8");
 
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var currentPage = <?php echo $current_page?>;
+        var pages = <?php echo $page_num?>;
+        $(".pagination a#"+currentPage).attr("class","active");
+
+        for(var i = 1; i < pages; i++){
+            if(i!=currentPage){
+                $(".pagination a#"+i).removeAttr("class");
+            }
+        }
+
+    })
+</script>
 </body>
 </html>
