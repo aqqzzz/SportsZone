@@ -317,6 +317,68 @@ li.active a{
     -o-transition: all 0.35s;
     transition: all 0.35s;
 }
+
+
+
+#create-activity-info #activity-content {
+    margin-left: 30px;
+}
+
+#create-activity-info hr{
+    max-width: 100%;
+}
+
+#create-activity-info {
+    background-color: white;
+    padding-bottom: 2%;
+    padding-left: 10px;
+    padding-right:10px;
+}
+
+#create-activity-info .form-control {
+    width: auto;
+    display: inline-block;
+}
+
+#create-activity-info #ac-simple-des {
+    float: left;
+}
+
+#create-activity-info textarea.form-control,
+#create-activity-info #upload-file,
+#create-activity-info #upload-show{
+    width: 95%;
+    margin:10px 2.5%;
+}
+
+#create-activity-info button {
+    float: right;
+    background-color: white;
+    color: #f05f40;
+
+}
+
+#create-activity-info button:hover{
+
+    background-color: #f05f40;
+    color: white;
+
+    -webkit-transition: all 0.35s;
+    -moz-transition: all 0.35s;
+    -ms-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+}
+
+#create-activity-info .central-sub-btn{
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+
+#create-activity-info .btn{
+    /*font-size: 20px;*/
+}
 /*end of activity.html*/
 
 /*single activity.html*/
@@ -353,7 +415,7 @@ li.active a{
     background-color: lightgrey;
 }
 
-#single-activity #activity-info .activity-info-nums i {
+#single-activity #activity-info .activity-info-nums div {
     display: block;
     padding-left: 20px;
     padding-top: 20px;
@@ -362,9 +424,10 @@ li.active a{
     color: #f05f40;
 
 }
-#single-activity #activity-info .activity-info-nums i span {
+#single-activity #activity-info .activity-info-nums span {
     font-size: 16px;
     padding-left: 10px;
+    display:inline-block;
     font-family: 'Helvetica','Microsoft YaHei UI','FontAwesome',Arial;
 }
 
@@ -826,42 +889,7 @@ li.active a{
     transition: all 0.35s;;
 }
 
-#create-activity-info {
-    background-color: white;
-    padding-bottom: 2%;
-}
 
-#create-activity-info .form-control {
-    width: auto;
-    display: inline-block;
-}
-
-#create-activity-info #ac-simple-des {
-    float: left;
-}
-
-#create-activity-info textarea {
-     width: 90%;
- }
-
-#create-activity-info button {
-    float: right;
-    background-color: white;
-    color: #f05f40;
-
-}
-
-#create-activity-info button:hover{
-
-    background-color: #f05f40;
-    color: white;
-
-    -webkit-transition: all 0.35s;
-    -moz-transition: all 0.35s;
-    -ms-transition: all 0.35s;
-    -o-transition: all 0.35s;
-    transition: all 0.35s;
-}
 
 
 #user .body .row, #community #content .row {
