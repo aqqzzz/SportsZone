@@ -131,9 +131,10 @@ class activity extends CI_Controller {
                     'des_image'=>$des_image,
                 );
 
-                $this->activity_model->insert($insert_data);
+                $activityid=$this->activity_model->insert($insert_data);
 
                 $data['actInfo'] = $insert_data;
+                $data['partiInfo'] = $this->parti_act_model->get_by_activity($activityid);
 
                 $this->load->view('activity/single_activity',$data);
             }
@@ -173,20 +174,19 @@ class activity extends CI_Controller {
         }
     }
 
-//    public function get_all_act($type=-1,$page_num=1){
-//        $per_page = 6;
-//
-//        $data['actItem'] = $this->activity_model->get_activities($type,$page_num,$per_page);
-//        if(empty($data['actItem'])){
-//            return false;
-//        }
-//        $data['actType']=$type;
-//        $data['page_num'] = $this->page_seg($type);
-//        $data['current_page'] = $page_num;
-////
-//
-//        $this->load->view('activity/activity',$data);
-//    }
+    public function get_all_act($type=-1,$page_num=1){
+        $per_page = 6;
+
+        $data['actInfo'] = $this->activity_model->get_activities($type,$page_num,$per_page);
+        if(empty($data['actInfo'])){
+            echo "empty";
+            return false;
+        }
+
+        $data['total_nums']=$this->page_seg($type);
+
+        echo json_encode($data);
+    }
 
     public function show_all_act($type=-1,$page_num=1){
 
@@ -232,9 +232,8 @@ class activity extends CI_Controller {
     public function page_seg($type=-1){
         $result_num = $this->activity_model->get_pages($type);
         $pages = ceil($result_num/6);
-        echo $result_num/6;
-        echo "<br />";
-        echo $pages;
+
+//        echo json_encode($pages);
         return $pages;
     }
 
@@ -266,5 +265,19 @@ class activity extends CI_Controller {
         $this->parti_act_model->insert($data);
 
         $this->get_single_act($activityid);
+    }
+
+    //获取某个用户参加的全部活动
+    public function get_act_by_user($userid,$page,$per_page){
+        $data['actInfo'] = $this->parti_act_model->get_by_user($userid,$page,$per_page);
+        $data['total_nums']=ceil(count($data['actInfo'])/6);
+        echo json_encode($data);
+    }
+
+    //获取某个用户创建的全部活动
+    public function get_act_by_author($userid,$page,$per_page){
+        $data['actInfo'] = $this->activity_model->get_act_by_author($userid,$page,$per_page);
+        $data['total_nums']=ceil(count($data['actInfo'])/6);
+        echo json_encode($data);
     }
 }

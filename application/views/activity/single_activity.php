@@ -113,9 +113,9 @@ header("Content-Type: text/html; charset=utf-8");
 
 
         <ol class="breadcrumb">
-            <li><a href="index.html">首页</a></li>
-            <li><a href="activity.html">活动</a></li>
-            <li><a href="activity.html">
+            <li><a href="<?php echo site_url()."welcome"?>">首页</a></li>
+            <li><a href="<?php echo site_url()."activity/show_all_act/-1/1"?>">活动</a></li>
+            <li><a href="<?php echo site_url()."activity/show_all_act/".$actInfo['type']."/1"?>">
                     <?php
                     $type = $actInfo['type'];
                     switch($type){

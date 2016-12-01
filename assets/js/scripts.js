@@ -249,3 +249,7 @@ $(function () {
 });
 
 
+// function reloadActByType(elem,type,page_num){
+//
+// }
+

@@ -27,8 +27,18 @@ class parti_act_model extends CI_Model {
         }
     }
 
-    public function get_by_user($id){
-        $result = $this->db->query('select * from parti_activity WHERE participantid=".$id');
+    public function get_by_user($id,$pagenum,$per_page){
+        $start = ($pagenum-1)*$per_page;
+        $end = $start+$per_page;
+
+        $total = $this->db->query("select activity.* from parti_activity,activity WHERE parti_activity.participantid=".$id." and activity.activityid=parti_activity.activityid");
+        $total_records = $total->num_rows();
+
+        if($end<$total_records){
+            $end = $total_records;
+        }
+
+        $result = $this->db->query("select activity.* from parti_activity,activity WHERE parti_activity.participantid=".$id." and activity.activityid=parti_activity.activityid limit ".$start.",".$end);
         if($result->num_rows()!=0){
             return $result->result();
         }

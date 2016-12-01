@@ -41,24 +41,24 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
         <div class="collapse navbar-collapse" id="header-nav">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="page-scroll" href="index.html">Home</a>
+                    <a href="<?php echo base_url()?>">Home</a>
                 </li>
                 <li class="dropdown">
-                    <a href="activity.html" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
+                    <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">单人PK</a></li>
-                        <li><a href="#">多人竞赛</a></li>
+                        <li><a href="<?php echo site_url()."activity/show_all_act/"."0/1"?>">单人PK</a></li>
+                        <li><a href="<?php echo site_url()."activity/show_all_act/"."1/1"?>">多人竞赛</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">小组活动</a></li>
+                        <li><a href="<?php echo site_url()."activity/show_all_act/"."2/1"?>">小组活动</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-plus-circle text-center"></i></a></li>
+                        <li><a href="<?php echo site_url()."activity/create_activity"?>"><i class="fa fa-plus-circle text-center"></i></a></li>
                     </ul>
                 </li>
                 <li>
@@ -66,17 +66,20 @@
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="statistic.html">Statistic</a>
+                    <a class="page-scroll" href="#content">Statistic</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="#page-top">User</a>
+                    <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="#contact">Contact us</a>
+                    <a href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
                 </li>
 
+                <li>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
+                </li>
 
 
             </ul>

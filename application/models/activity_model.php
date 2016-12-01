@@ -13,7 +13,16 @@ class activity_model extends CI_Model {
     }
     //插入活动信息
     public function insert($data){
-        return $this->db->insert('activity',$data);
+
+        $result = $this->db->insert('activity',$data);
+        $activityid = $this->db->insert_id();
+        $parti_data = array(
+            'participantid'=>$data['authorid'],
+            'activityid'=>$activityid
+        );
+        $this->db->insert('parti_activity',$parti_data);
+        return $activityid;
+
     }
 
     public function read_act_info($id){
@@ -45,6 +54,28 @@ class activity_model extends CI_Model {
 
             return $result->result();
         }
+    }
+
+    public function get_act_by_author($id,$pagenum,$per_page){
+        $start = ($pagenum-1)*$per_page;
+        $end = $start+$per_page;
+
+
+        $total = $this->db->query("select * from activity where authorid=".$id);
+        $total_records = $total->num_rows();
+
+        if($end>$total_records){
+            $end = $total_records;
+        }
+
+
+        $result = $this->db->query("select * from activity where authorid=".$id." limit ".$start.",".$end);
+        if($result->num_rows()!=0){
+            return $result->result();
+        }else{
+            return false;
+        }
+
     }
 
 //    public function get_all_act($type){
