@@ -71,12 +71,12 @@ header("Content-Type: text/html; charset=utf-8");
                         <li><a href="<?php echo site_url()."activity/create_activity"?>"><i class="fa fa-plus-circle text-center"></i></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="page-scroll" href="#content">Community</a>
+                <li id="community-nav">
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
-                    <a href="<?php echo site_url().""?>">Statistic</a>
+                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
                 </li>
 
                 <li>
@@ -110,7 +110,7 @@ header("Content-Type: text/html; charset=utf-8");
     <div class="container">
         <div class="header text-center">
             <div class="user-portrait">
-                <div class="portfolio-box">
+                <div class="portfolio-box" id="img-ref">
                     <a href="">
                         <img src="<?php echo $userInfo['avatar']?>" class="img-circle" alt="avator">
                         <div class="portfolio-box-caption">
@@ -127,7 +127,7 @@ header("Content-Type: text/html; charset=utf-8");
                 </div>
 
                 <br>
-                <p class="user-name"><?php echo $username?></p>
+                <p class="user-name"><?php echo $userInfo['username']?></p>
                 <i class="fa fa-venus"></i>
                 <p>一句话介绍一下自己吧</p>
 
@@ -137,8 +137,8 @@ header("Content-Type: text/html; charset=utf-8");
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="user.html">我的主页</a></li>
-                        <li><a href="statistic.html">我的运动</a></li>
+                        <li class="active"><a href="#" id="main-page">我的主页</a></li>
+                        <li><a href="<?php echo site_url()."sports/show_sports_page/".$userInfo['userid']?>" id="sport">我的运动</a></li>
                     </ul>
                 </div>
             </div>
@@ -149,9 +149,9 @@ header("Content-Type: text/html; charset=utf-8");
             <div class="row interest">
                 <div class="col-md-3">
                     <ul class="nav nav-tabs nav-justified">
-                        <li><a href="following.html">关注</a></li>
-                        <li><a href="#">粉丝</a></li>
-                        <li><a href="my-activities.html">活动</a></li>
+                        <li><a type="button" id="following">关注</a></li>
+                        <li><a type="button" id="followers">粉丝</a></li>
+                        <li><a type="button" id="my-act">活动</a></li>
                     </ul>
 
                     <!--<div class="user-information">
@@ -181,15 +181,14 @@ header("Content-Type: text/html; charset=utf-8");
                         <br><a href="create-activity.html">发布活动</a>
                     </div>
 
+
                 </div>
-
-
 
                 <div class="col-md-9 col-xs-10 user-message-box">
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name"><?php echo $username?><br>10月19日 20:11</p>
+                            <img src="<?php echo $userInfo['avatar']?>" class="img-circle">
+                            <p class="user-name"><?php echo $userInfo['username']?><br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
                             这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
@@ -197,8 +196,8 @@ header("Content-Type: text/html; charset=utf-8");
                         </div>
                         <div class="message-comment">
                             <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
+                                <li><a type="button" id="favor"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
+
                             </ul>
 
 
@@ -206,147 +205,13 @@ header("Content-Type: text/html; charset=utf-8");
                         <div class="message-favor">
                             <i class="fa fa-thumbs-up"></i>
                             <img src="<?=base_url();?>assets/images/users/1.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/2.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/3.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/5.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/3.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/2.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/1.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/2.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/3.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
-                            <img src="<?=base_url();?>assets/images/users/4.jpg" class="img-circle">
                         </div>
                     </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?=base_url();?>assets/images/users/6.jpg" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
+                </div>
+                <div class="user-follow col-md-9 col-xs-10" id="following-box" style="display: none">
 
                 </div>
+                <div class="user-act col-md-9 col-xs-10" id="my-activity-box" style="display:none"></div>
 
 
             </div>
@@ -386,9 +251,6 @@ header("Content-Type: text/html; charset=utf-8");
 
 </section>
 
-
-
-
 <script src="<?=base_url();?>assets/vendor/jquery/jquery.min.js"></script>
 
 <script src="<?=base_url();?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -403,5 +265,208 @@ header("Content-Type: text/html; charset=utf-8");
 
 
 <script type="text/javascript" src="<?=base_url();?>assets/js/scripts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var session_user = <?php echo $userid?>;
+        var page_user = <?php echo $userInfo['userid']?>;
+        var follow_text="我的关注";
+        var follower_text="我的粉丝";
+        var activity_text = "我的活动";
+
+        if(session_user==page_user){
+            $('#img-ref .project-category').html("设置");
+            $('#img-ref a').attr("href","<?php echo site_url()."user_authentication/user_info_setting"?>");
+
+            $("#user-nav").attr("class","active");
+            $("#community-nav").attr("class","");
+
+
+        }else{
+            var is_following = '<?php echo site_url()."user_authentication/is_following/".$userid."/".$userInfo['userid']?>'';
+            alert(page_user);
+            alert(is_following);
+            if(is_following){
+                $('#img-ref .project-category').html("取消关注");
+            }else{
+                $('#img-ref .project-category').html("关注");
+            }
+
+            $('.user-navbar .row #main-page').html("Ta的主页");
+            $('.user-navbar .row #sport').html("Ta的运动");
+
+            $('.edit-message').css("display","none");
+
+            $("#user-nav a").attr("href","<?php echo site_url()."user_authentication/login_process"?>");
+
+            $("#community-nav a").attr("class","page-scroll");
+            $("#user-nav a").attr("class","");
+
+            follow_text="Ta的关注";
+            follower_text="Ta的粉丝";
+            activity_text="Ta的活动";
+//            $('#img-ref a').attr("href","<?php //echo site_url()."user_authentication/user_info_setting"?>//");
+        }
+
+        $(".nav #following").click(function() {
+//            window.location="<?php //echo site_url()."user_authentication/show_follow_page/"?>//"+page_user+"/"+0;
+            $(".user-message-box").css("display","none");
+            $(".user-act#my-activity-box").css("display","none");
+
+            $(".user-follow#following-box").html("");
+
+            $.ajax({
+                type:"GET",
+                url:"<?php echo site_url()."user_authentication/get_all_followings/".$userInfo['userid']?>",
+                dataType:'json',
+                data:{userid:page_user},
+                success:function(result){
+                    if(result){
+
+                        $(".user-follow#following-box").css("display","block");
+                        var header="<h3>"+follow_text+"</h3>";
+                        $(".user-follow#following-box").append(header);
+
+                        if(result['null_message']!=null){
+                            var null_message = "<div class='null-message text-center'>"+result['null_message']+"</div>";
+                        }else{
+                            $.each(result['following'],function(n,value){
+                                var output_text='<div class="col-lg-5 col-md-5 col-sm-5 following-user">'+
+                                    '<div class="image">'+
+                                    '<a href="<?php echo site_url()."user_authentication/show_admin_page/"?>'+value.userid+'/'+value.username+'">'+
+                                    '<img src="'+value.avatar+'" class="img-responsive img-circle">'+
+                                    '</a> ' +
+                                    '</div> ' +
+                                    '<div class="description"> ' +
+                                    '<p class="user-name">'+value.username+'</p> '+
+                                    '<p class="user-description">简介：一只爱跳舞的程序猿'+
+                                    '</p>'+
+                                    '</div> ' +
+                                    '</div>';
+                                $(".user-follow#following-box").append(output_text);
+                            });
+                        }
+
+                    }
+                }
+            });<!--end of following's ajax-->
+        });
+
+        $(".nav #followers").click(function() {
+
+            $(".user-message-box").css("display","none");
+            $(".user-act#my-activity-box").css("display","none");
+            $(".user-follow#following-box").html("");
+
+            $.ajax({
+                type:"GET",
+                url:"<?php echo site_url()."user_authentication/get_all_followers/".$userInfo['userid']?>",
+                dataType:'json',
+                data:{userid:page_user},
+                success:function(result){
+                    if(result){
+
+                        $(".user-follow#following-box").css("display","block");
+                        var header="<h3>"+follower_text+"</h3>";
+                        $(".user-follow#following-box").append(header);
+
+                        if(result['null_message']!=null){
+                            var null_message = "<div class='null-message text-center'>"+result['null_message']+"</div>";
+                        }else{
+                            $.each(result['followers'],function(n,value){
+                                var output_text='<div class="col-lg-5 col-md-5 col-sm-5 following-user">'+
+                                    '<div class="image">'+
+                                    '<a href="<?php echo site_url()."user_authentication/show_admin_page/"?>'+value.userid+'/'+value.username+'">'+
+                                    '<img src="'+value.avatar+'" class="img-responsive img-circle">'+
+                                    '</a> ' +
+                                    '</div> ' +
+                                    '<div class="description"> ' +
+                                    '<p class="user-name">'+value.username+'</p> '+
+                                    '<p class="user-description">简介：一只爱跳舞的程序猿'+
+                                    '</p>'+
+                                    '</div> ' +
+                                    '</div>';
+                                $(".user-follow#following-box").append(output_text);
+                            });
+                        }
+
+                    }
+                }
+            });
+        });
+
+        var type_array = ['单人PK','多人竞赛','小组活动'];
+        loadMyAct(page_user,type_array,activity_text);
+
+        $(".message-comment #favor").click(function(){
+            var person="<img src='<?php echo $this->session->userdata['logged_in']['avatar']?>' class='img-circle'>";
+            $(".message-favor").append(person);
+        })
+
+
+    });
+
+    function unfollowHandler($userid,$followid){
+
+    }
+
+    function followHandler($userid,$followid){
+
+    }
+
+    function loadMyAct(userid,type_array,activity_text){
+
+        $(".nav #my-act").unbind('click').click(function(){
+
+            $(".user-message-box").css("display","none");
+            $(".user-follow#following-box").css("display","none");
+
+            $(".user-act#my-activity-box").html("");
+
+            $(".user-act#my-activity-box").append("<h3>"+activity_text+"</h3><hr>");
+
+//            var page=$(this).attr("myid");
+            $.ajax({
+                    type:"GET",
+                    url:"<?php echo site_url()."activity/get_act_by_user/"?>"+userid+"/1/6",
+                    dataType:'json',
+                    data:{userid:userid},
+                    success:function(result){
+                        if(result){
+                            $(".user-act#my-activity-box").css("display","block");
+                            reload(result,type_array,-1,1);
+                        }
+                    }
+                });
+            });
+    }
+
+    function reload(result,type_array,type,page){
+
+        var item;
+        var body="";
+        $.each(result['actInfo'],function(n,value){
+
+            var elem = '<div class="col-lg-10 col-md-10 col-sm-10 activity-item">' +
+                    '<div class="image">'+
+                '<a href="<?php echo site_url()."activity/get_single_act/"?>'+value.activityid+'">'+
+                '<img src='+value.des_image+' alt='+value.activityname+' class="img-responsive">'+
+                '</a> ' +
+                '</div>' +
+                '<div class="description"> ' +
+                '<h3 class="user-name">'+value.activityname+'</h3> ' +
+                '<p class="act-type"> ' +type_array[value.type]+
+                '</p> ' +
+                '<p class="user-description">' +value.description+
+                '</p> ' +
+                '</div>'+
+                '<button class="btn btn-primary"; id="more-info" onclick=\'window.location="<?php echo site_url()."activity/get_single_act/"?>'+value.activityid+'"\'>查看详情</button>'+
+                '</div>';
+            body+=elem;
+        });
+        $('.user-act#my-activity-box').append(body);
+    }
+
+
+</script>
 </body>
 </html>

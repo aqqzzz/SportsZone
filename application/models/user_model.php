@@ -5,7 +5,7 @@
  * Date: 2016/11/12 0012
  * Time: 20:35
  */
-class login_database extends CI_Model {
+class User_model extends CI_Model {
     public function __construct()
     {
         parent::__construct();
@@ -26,7 +26,21 @@ class login_database extends CI_Model {
 
     //读取用户信息
     public function read_user_information($username){
+        $username = urldecode($username);
         $query = $this->db->query('SELECT * FROM user WHERE username="'.$username.'"');
+
+
+        if($query->num_rows()==1){
+            $row = $query->row();
+            return $row;
+        }else{
+            return false;
+        }
+    }
+
+    //读取用户信息byid
+    public function read_user_info_byid($userid){
+        $query = $this->db->query('SELECT * FROM user WHERE userid="'.$userid.'"');
 
 
         if($query->num_rows()==1){

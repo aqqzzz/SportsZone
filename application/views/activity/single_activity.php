@@ -70,19 +70,23 @@ header("Content-Type: text/html; charset=utf-8");
                     </ul>
                 </li>
                 <li>
-                    <a class="page-scroll" href="community.html">Community</a>
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="statistic.html">Statistic</a>
+                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="user.html">User</a>
+                    <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="#contact">Contact us</a>
+                    <a href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
+                </li>
+
+                <li>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
                 </li>
 
 
@@ -160,7 +164,9 @@ header("Content-Type: text/html; charset=utf-8");
                 <?php isset($partiInfo)?>
                 <?php foreach ($partiInfo as $user):?>
                     <div class="col-md-1 col-sm-2 col-xs-3">
-                        <a href="#"><img src="<?php echo $user->avatar?>" class="img-responsive"></a>
+                        <a type="button" class="user-info" id="<?php echo $user->userid?>" name="<?php echo $user->username?>">
+                            <img src="<?php echo $user->avatar?>" class="img-responsive" alt="<?php echo $user->username?>">
+                        </a>
                         <p><?php echo $user->username?></p>
                     </div>
                 <?php endforeach;?>
@@ -234,6 +240,13 @@ header("Content-Type: text/html; charset=utf-8");
         $(document).on("click","#parti_bttn",function(){
             window.location="<?php echo site_url()."activity/parti_activity/".$userid."/".$actInfo['actid']?>";
         });
+
+        $(document).on("click",".user-info",function(){
+            var userid = $(this).attr("id");
+            var username = $(this).attr("name");
+
+            window.location="<?php echo site_url()."user_authentication/show_admin_page/"?>"+userid+"/"+username;
+        })
     });
 </script>
 </body>

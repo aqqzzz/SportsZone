@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    $userid = ($this->session->userdata['logged_in']['userid']);
+    $username = ($this->session->userdata['logged_in']['username']);
+
+} else {
+    header("location: login");
+}
+header("Content-Type: text/html; charset=utf-8");
+
+?>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -62,7 +73,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="page-scroll" href="community.html">Community</a>
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
@@ -100,9 +111,9 @@
     <div class="container">
         <div class="header text-center">
             <div class="user-portrait">
-                <img src="<?php echo base_url()?>assets/images/users/6.jpg" class="img-circle">
+                <img src="<?php echo $userInfo['avatar']?>" class="img-circle">
 
-                <p class="user-name">张耳朵</p>
+                <p class="user-name"><?php echo $userInfo['username']?></p>
                 <i class="fa fa-venus"></i>
                 <p>一句话介绍一下自己吧</p>
             </div>
@@ -111,8 +122,8 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <ul class="nav nav-tabs nav-justified">
-                        <li><a href="user.html">我的主页</a></li>
-                        <li class="active"><a href="statistic.html">我的运动</a></li>
+                        <li><a href="<?php echo site_url()."user_authentication/show_admin_page/".$userInfo['userid']."/".$userInfo['username']?>">我的主页</a></li>
+                        <li class="active"><a href="#">我的运动</a></li>
                     </ul>
                 </div>
             </div>

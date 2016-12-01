@@ -18,7 +18,8 @@ class user_authentication extends CI_Controller {
 
         $this->load->helper('security');
 
-        $this->load->model('login_database');
+        $this->load->model('user_model');
+        $this->load->model('follow_model');
 
     }
 
@@ -46,7 +47,7 @@ class user_authentication extends CI_Controller {
                 'password'=>$this->input->post('password'),
                 'avatar'=>base_url()."assets/images/users/6.jpg"
             );
-            $result = $this->login_database->registration_insert($data);
+            $result = $this->user_model->registration_insert($data);
             if($result==TRUE){
                 $data['message_display'] = '注册成功！';
                 $this->load->view('login/login_form',$data);
@@ -72,7 +73,9 @@ class user_authentication extends CI_Controller {
         if($this->form_validation->run() == FALSE) {
 
             if (isset($this->session->userdata['logged_in'])) {
-                $this->load->view('admin/admin_page');
+                $data['userInfo']=$this->session->userdata['logged_in'];
+
+                $this->load->view('admin/admin_page',$data);
             }else {
                 $this->load->view('login/login_form');
             }
@@ -82,12 +85,11 @@ class user_authentication extends CI_Controller {
                 'password'=>$this->input->post('password')
             );
 
-            $result = $this->login_database->login($data);
+            $result = $this->user_model->login($data);
 
             if($result==TRUE){
                 $username = $this->input->post('username');
-
-                $result = $this->login_database->read_user_information($username);
+                $result = $this->user_model->read_user_information($username);
 
                     $session_data = array(
                         'userid'=>$result->userid,
@@ -96,8 +98,11 @@ class user_authentication extends CI_Controller {
                         'sex'=>$result->sex,
                         'cityid'=>$result->cityid
                     );
-                    $this->session->set_userdata('logged_in',$session_data);
-                    $this->load->view('admin/admin_page');
+
+                $this->session->set_userdata('logged_in',$session_data);
+                $data['userInfo'] = $this->session->userdata['logged_in'];
+
+                $this->load->view('admin/admin_page',$data);
 
             }else{
                 $data = array(
@@ -124,7 +129,7 @@ class user_authentication extends CI_Controller {
         $username = $this->session->userdata['logged_in']['username'];
         $username=urldecode($username);
         echo($username);
-        $result = $this->login_database->read_user_information($username);
+        $result = $this->user_model->read_user_information($username);
 
         if($result!=false){
             $data['userInfo'] = array(
@@ -140,9 +145,32 @@ class user_authentication extends CI_Controller {
 
     }
 
-    public function user_info_get($username){
-        $username=urldecode($username);
-        $result = $this->login_database->read_user_information($username);
+    //加载个人界面（本人或其他人）
+    public function show_admin_page($userid,$username){
+
+        $sessionid = $this->session->userdata['logged_in']['userid'];
+        if($userid==$sessionid){
+            $data['userInfo'] = $this->session->userdata['logged_in'];
+        }else{
+            $result = $this->user_model->read_user_information($username);
+            $data['userInfo'] = array(
+                'userid'=>$result->userid,
+                'username'=>$result->username,
+                'avatar'=>$result->avatar,
+                'sex'=>$result->sex,
+                'cityid'=>$result->cityid
+            );
+
+
+        }
+
+        $this->load->view('admin/admin_page',$data);
+    }
+
+
+    public function user_info_get($userid,$username){
+
+        $result = $this->user_model->read_user_information($username);
 
         if($result!=false){
             $data = array(
@@ -153,7 +181,9 @@ class user_authentication extends CI_Controller {
                 'cityid'=>$result->cityid
             );
 
-            $this->session->set_userdata('logged_in',$data);
+            if($userid==$result->userid){
+                $this->session->set_userdata('logged_in',$data);
+            }
 
             echo json_encode($data);
         }
@@ -183,14 +213,14 @@ class user_authentication extends CI_Controller {
             'cityid'=>$this->input->post('city')
         );
 
-        $updateSuccess=$this->login_database->update_user_information($id,$data);
+        $updateSuccess=$this->user_model->update_user_information($id,$data);
         if($updateSuccess==FALSE){
             echo "update falied";
         }else if($updateSuccess==TRUE){
 
             $username=$this->input->post('username');
 
-            $result = $this->login_database->read_user_information($username);
+            $result = $this->user_model->read_user_information($username);
 
             $session_data = array(
                 'userid'=>$id,
@@ -258,7 +288,7 @@ class user_authentication extends CI_Controller {
             $old_pwd = $this->input->post('old_pwd');
             $new_pwd = $this->input->post('new_pwd');
 
-            $result = $this->login_database->read_user_information($username);
+            $result = $this->user_model->read_user_information($username);
             if($result->password == $old_pwd){
                 $data = array(
                     'userid'=>$id,
@@ -267,7 +297,7 @@ class user_authentication extends CI_Controller {
                 );
 
 
-                $this->login_database->update_user_information($id,$data);
+                $this->user_model->update_user_information($id,$data);
 
                 $this->logout();
 
@@ -282,6 +312,87 @@ class user_authentication extends CI_Controller {
         }
     }
 
+    //关注用户 操作用户，被关注用户
+    public function follow($userid, $followid){
+        $data = array(
+            'userid'=>$userid,
+            'followid'=>$followid
+        );
+        $follow = $this->follow_model->insert($data);
+        return $follow;
+    }
 
+    //取关
+    public function unfollow($userid, $unfollowid){
+        $data = $this->follow_model->delete($userid,$unfollowid);
+        return $data;
+    }
 
+    //加载关注列表界面
+    public function show_follow_page($userid,$type){
+        $user = $this->user_model->read_user_info_byid($userid);
+        if($type==0){
+            $result = $this->follow_model->get_all_following($userid);
+            if($result==false){
+                $data['null_message'] = "你还没有关注别人，去社区看看吧";
+            }else{
+                $data['following']=$result;
+
+            }
+        }else{
+            $result = $this->follow_model->get_all_followers($userid);
+            if($result==false){
+                $data['null_message'] = "你还没有粉丝";
+            }else{
+                $data['followers']=$result;
+            }
+        }
+
+        $data['userInfo']=array(
+            'userid'=>$user->userid,
+            'username'=>$user->username,
+            'avatar'=>$user->avatar,
+            'sex'=>$user->sex,
+            'cityid'=>$user->cityid
+        );
+        $this->load->view("user/user_follow",$data);
+    }
+
+    //获取关注列表
+    public function get_all_followings($userid){
+        $result = $this->follow_model->get_all_following($userid);
+        if($result==false){
+            $data['null_message'] = "你还没有关注别人，去社区看看吧";
+        }else{
+            $data['following']=$result;
+            $data['null_message']=null;
+        }
+
+        echo json_encode($data);
+
+    }
+
+    public function is_following($userid,$followingid){
+        $result = $this->follow_model->get_all_following($userid);
+        $is_following = false;
+        foreach($result as $item){
+            if($item->followid==$followingid){
+                $is_following=true;
+            }
+        }
+        return $is_following;
+    }
+
+    //获取粉丝列表
+    public function get_all_followers($userid){
+        $result = $this->follow_model->get_all_followers($userid);
+        if($result==false){
+            $data['null_message'] = "你还没有粉丝";
+        }else{
+            $data['followers']=$result;
+        }
+
+        echo json_encode($data);
+
+    }
 }

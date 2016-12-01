@@ -73,11 +73,11 @@ header("Content-Type: text/html; charset=utf-8");
                     </ul>
                 </li>
                 <li>
-                    <a class="page-scroll" href="community.html">Community</a>
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="statistic.html">Statistic</a>
+                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
                 </li>
 
                 <li>
@@ -85,15 +85,11 @@ header("Content-Type: text/html; charset=utf-8");
                 </li>
 
                 <li>
-                    <a id="logout" href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
+                    <a href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
                 </li>
 
-                <li class="dropdown">
-                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">编辑资料</a></li>
-                        <li><a href="#">修改密码</a></li>
-                    </ul>
+                <li>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
                 </li>
 
 

@@ -70,17 +70,6 @@ header("Content-Type: text/html; charset=utf-8");
                         <li><a href="<?php echo site_url()."activity/create_activity"?>"><i class="fa fa-plus-circle text-center"></i></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
-                </li>
-
-                <li>
-                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
-                </li>
-
-                <li>
-                    <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
-                </li>
 
                 <li>
                     <a href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
@@ -115,17 +104,12 @@ header("Content-Type: text/html; charset=utf-8");
                 <div class="list-group hidden-sm hidden-xs">
                     <h2>竞赛</h2>
                     <hr>
-<!--                    <a href="--><?php //echo site_url()."activity/show_all_act/0/1"?><!--" class="list-group-item total-act" id="t0">单人PK</a>-->
+                    <!--                    <a href="--><?php //echo site_url()."activity/show_all_act/0/1"?><!--" class="list-group-item total-act" id="t0">单人PK</a>-->
                     <a type="button" class="list-group-item total-act" id="t0" myid="1">单人PK</a>
                     <a type="button" class="list-group-item total-act" id="t1" myid="1">多人竞赛</a>
                     <h2>接力</h2>
                     <hr>
                     <a type="button" class="list-group-item total-act" id="t2" myid="1">小组活动</a>
-                    <h2>我的</h2>
-                    <hr>
-                    <a type="button" class="list-group-item my-activity" id="parti" myid="1">我参加的</a>
-                    <a type="button" class="list-group-item my-activity" id="create" myid="1">我发起的</a>
-                    <a href="<?php echo site_url()."activity/create_activity"?>" class="list-group-item"><i class="fa fa-plus-circle"></i>创建活动</a>
                 </div>
 
                 <div class="visible-sm visible-xs">
@@ -133,7 +117,7 @@ header("Content-Type: text/html; charset=utf-8");
                         <li class="active"><a href="#">单人PK</a></li>
                         <li><a href="#">多人竞赛</a></li>
                         <li><a href="#">小组活动</a></li>
-                        <li><a href="create-activity.html"><i class="fa fa-plus-circle"></i>创建活动</a></li>
+
                     </ul>
                 </div>
 
@@ -203,14 +187,14 @@ header("Content-Type: text/html; charset=utf-8");
                             <a type="button" class="total-act" id="t<?php echo $actType?>" myid="<?php echo ($current_page-1)?>" >&laquo;</a>
                         </li>
                         <?php
-                            for($i=1; $i<=$page_num; $i++){
+                        for($i=1; $i<=$page_num; $i++){
 
-                                echo "<li>";
-                                echo "<a type='button' class='total-act' id='t$actType' myid='$i'>";
-                                echo $i;
-                                echo "</a>";
-                                echo "</li>";
-                            }
+                            echo "<li>";
+                            echo "<a type='button' class='total-act' id='t$actType' myid='$i'>";
+                            echo $i;
+                            echo "</a>";
+                            echo "</li>";
+                        }
 
                         ?>
                         <li>
@@ -346,8 +330,8 @@ header("Content-Type: text/html; charset=utf-8");
                 '</p> ' +
                 '<p class="des-content"> ' +value.description+
                 '</p> ' +
-                '<button class="btn btn-primary"; id="more-info" onclick=\'window.location="<?php echo site_url()."activity/get_single_act/"?>'+value.activityid+'"\'>查看详情</button>' +
-            '</div>';
+                '<button class="btn btn-primary"; id="查看详情" onclick=\'window.location="<?php echo site_url()."activity/get_single_act/"?>'+value.activityid+'"\'>查看详情</button>' +
+                '</div>';
             body+=elem;
         });
         $('#act-content').append(body);

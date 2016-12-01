@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    $userid = ($this->session->userdata['logged_in']['userid']);
+    $username = ($this->session->userdata['logged_in']['username']);
+    $avatar = ($this->session->userdata['logged_in']['avatar']);
+    $sex = ($this->session->userdata['logged_in']['sex']);
+    $city = ($this->session->userdata['logged_in']['cityid']);
+} else {
+    header("location: login");
+}
+header("Content-Type: text/html; charset=utf-8");
+?>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -32,7 +44,7 @@
 
 
 </head>
-<body id="statistics" data-spy="scroll" data-target="sidebarMenu">
+<body id="community" data-spy="scroll" data-target="sidebarMenu">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
@@ -62,11 +74,11 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#content">Community</a>
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
-                    <a href="<?php echo site_url().""?>">Statistic</a>
+                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
                 </li>
 
                 <li>
@@ -80,7 +92,6 @@
                 <li>
                     <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
                 </li>
-
 
             </ul>
         </div><!-- /.navbar-collapse-->
@@ -104,23 +115,22 @@
                 <div class="user">
                     <div class="col-md-3 com-sm-3 nav">
                         <div class="card">
-                            <img class="card-img-top img-responsive" src="images/users/6.jpg" alt="Card image cap">
+                            <img class="card-img-top img-responsive" src="<?php echo $userInfo['avatar']?>" alt="Card image cap">
                             <div class="card-block user-information">
-                                <h4 class="card-title">张耳朵</h4>
+                                <h4 class="card-title"><?php echo $userInfo['username']?></h4>
                                 <p class="card-text">不爱跳舞的迷妹不是好程序猿</p>
                             </div>
 
                             <div class="card-block">
                                 <ul class="nav nav-tabs nav-justified text-center">
-                                    <li><span id="following-nums">8</span><br><a href="following.html">关注</a></li>
-                                    <li><span id="follower-nums">8</span><br><a href="followers.html">粉丝</a></li>
+                                    <li><span id="following-nums">2</span><br><a href="<?php echo site_url()."user_authentication/show_follow_page/".$userid."/0"?>">关注</a></li>
+                                    <li><span id="follower-nums">3</span><br><a href="<?php echo site_url()."user_authentication/show_follow_page/".$userid."/1"?>">粉丝</a></li>
                                 </ul>
                             </div>
 
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><a href="user.html">我的动态</a></li>
-                                <li class="list-group-item"><a href="statistic.html">我的运动</a></li>
-                                <li class="list-group-item"><a href="my-activities.html">我的活动</a></li>
+                                <li class="list-group-item"><a href="<?php echo site_url()."user_authentication/login_process"?>">我的动态</a></li>
+                                <li class="list-group-item"><a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">我的运动</a></li>
 
                             </ul>
 
@@ -139,7 +149,8 @@
                     </div>
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/6.jpg" class="img-circle">
+
+                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
                             <p class="user-name">张耳朵<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
@@ -156,31 +167,18 @@
                         </div>
                         <div class="message-favor">
                             <i class="fa fa-thumbs-up"></i>
-                            <img src="images/users/1.jpg" class="img-circle">
-                            <img src="images/users/2.jpg" class="img-circle">
-                            <img src="images/users/3.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/5.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/3.jpg" class="img-circle">
-                            <img src="images/users/2.jpg" class="img-circle">
-                            <img src="images/users/1.jpg" class="img-circle">
-                            <img src="images/users/2.jpg" class="img-circle">
-                            <img src="images/users/3.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
-                            <img src="images/users/4.jpg" class="img-circle">
+                            <a href="<?php echo site_url()."user_authentication/show_admin_page/1/啊扣扣0"?>"
+                            <img src="<?php echo base_url()."assets/images/users/1.jpg"?>" class="img-circle">
+                            </a>
                         </div>
                     </div>
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/1.jpg" class="img-circle">
-                            <p class="user-name">Deemo<br>10月19日 20:11</p>
+                            <a href="<?php echo site_url()."user_authentication/show_admin_page/1/啊扣扣0"?>">
+                            <img src="<?php echo base_url()."assets/images/users/1.jpg"?>" class="img-circle">
+                            </a>
+                            <p class="user-name">啊扣扣0<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
                             这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
@@ -196,7 +194,7 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/6.jpg" class="img-circle">
+                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
                             <p class="user-name">张耳朵<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
@@ -213,8 +211,10 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/2.jpg" class="img-circle">
-                            <p class="user-name">钢铁Q<br>10月19日 20:11</p>
+                            <a href="<?php echo site_url()."user_authentication/show_admin_page/2/啊扣扣1"?>">
+                            <img src="<?php echo base_url()."assets/images/users/2.jpg"?>" class="img-circle">
+                            </a>
+                            <p class="user-name">啊扣扣1<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
                             这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
@@ -230,8 +230,10 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/8.jpg" class="img-circle">
-                            <p class="user-name">啊哈<br>10月19日 20:11</p>
+                            <a href="<?php echo site_url()."user_authentication/show_admin_page/5/啊扣扣2"?>">
+                            <img src="<?php echo base_url()."assets/images/users/3.jpg"?>" class="img-circle">
+                                </a>
+                            <p class="user-name">啊扣扣2<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
                             这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
@@ -247,7 +249,7 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/6.jpg" class="img-circle">
+                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
                             <p class="user-name">张耳朵<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
@@ -264,7 +266,7 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/6.jpg" class="img-circle">
+                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
                             <p class="user-name">张耳朵<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">
@@ -281,7 +283,7 @@
 
                     <div class="message-item">
                         <div class="message-header">
-                            <img src="images/users/6.jpg" class="img-circle">
+                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
                             <p class="user-name">张耳朵<br>10月19日 20:11</p>
                         </div>
                         <div class="message-content">

@@ -227,7 +227,8 @@ section {
 
 }
 
-#activity #activity-info .portfolio-box .act-type{
+#activity #activity-info .portfolio-box .act-type,
+#user #my-activity-box .activity-item .act-type{
 
     /*float:right;*/
     max-width: 100px;
@@ -243,7 +244,8 @@ section {
     overflow: hidden;
 }
 
-#activity #activity-info .portfolio-box button{
+#activity #activity-info .portfolio-box button,
+#user #my-activity-box .activity-item button{
     float:right;
     top:0;
 }
@@ -368,7 +370,8 @@ li.active a{
     margin-left: 30px;
 }
 
-#create-activity-info hr{
+#create-activity-info hr,
+#my-activity-box hr{
     max-width: 100%;
 }
 
@@ -536,6 +539,22 @@ li.active a{
     -ms-transform: scale(1.2);
     -o-transform: scale(1.2);
     transform: scale(1.2);
+
+    -webkit-transition: all 0.35s;
+    -moz-transition: all 0.35s;
+    -ms-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+
+    z-index: 2;
+}
+
+#user #my-activity-box img:hover{
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    transform: scale(1.02);
 
     -webkit-transition: all 0.35s;
     -moz-transition: all 0.35s;
@@ -813,7 +832,7 @@ li.active a{
 #user #following-box .following-user, #user #my-activity-box .activity-item {
     background-color: beige;
     border-radius: 5px;
-    margin: 20px 30px ;
+    margin: 20px 25px ;
     padding-top: 20px;
     padding-bottom: 20px;
 }
@@ -838,6 +857,10 @@ li.active a{
 
 #user #following-box .following-user .description .user-name {
     font-weight:bold;
+}
+
+#user #following-box .following-user .description .user-description{
+    height:3em;
 }
 
 #user #following-box .following-user img:hover {

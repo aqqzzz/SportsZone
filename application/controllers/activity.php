@@ -13,7 +13,7 @@ class activity extends CI_Controller {
         parent::__construct();
         $this->load->model('activity_model');
         $this->load->model('parti_act_model');
-        $this->load->model('login_database');
+        $this->load->model('user_model');
         $this->load->library('pagination');
     }
 

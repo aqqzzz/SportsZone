@@ -71,19 +71,23 @@ header("Content-Type: text/html; charset=utf-8");
                     </ul>
                 </li>
                 <li>
-                    <a class="page-scroll" href="community.html">Community</a>
+                    <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="statistic.html">Statistic</a>
+                    <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="user.html">User</a>
+                    <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
                 </li>
 
                 <li>
-                    <a class="page-scroll" href="#contact">Contact us</a>
+                    <a href="<?php echo site_url()."user_authentication/logout"?>">Logout</a>
+                </li>
+
+                <li>
+                    <a href="<?php echo site_url()."user_authentication/user_info_setting"?>"><i class="fa fa-cog"></i></a>
                 </li>
 
 
