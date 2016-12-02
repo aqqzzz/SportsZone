@@ -849,6 +849,25 @@ li.active a{
     display: inline;
 }
 
+#statistics .ranked-list .list-group li a img{
+    height:60px;
+    display:inline;
+}
+#statistics .ranked-list{
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#statistics #content #statistic-box .ranked-list .list-group li span{
+    font-size:18px;
+}
+
+#statistics .ranked-list .list-group li span.badge{
+    margin-top:15px;
+    margin-bottom:auto;
+}
+
 /*end of statistics*/
 /* following */
 #user #following-box, #user #my-activity-box{

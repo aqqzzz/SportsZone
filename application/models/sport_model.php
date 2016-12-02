@@ -24,7 +24,7 @@ class Sport_model extends CI_Model {
 
         $date_arr = array(20,9,2016);
         $end_date = "161202";
-        $userid = 2;
+        $userid = 7;
         do {
             $distance=$this->randomFloat(0,50);
             $body = ($this->find_body_info($userid));
@@ -48,8 +48,18 @@ class Sport_model extends CI_Model {
     }
 
     //体重/身高的平方 kg/m2
-    public function set_body_message($weight,$height,$body_fat){
+    public function set_body_message($userid,$weight,$height,$body_fat){
+
         $bmi = $weight/(pow($height,2));
+        $data = array(
+            'weight'=>$weight,
+            'height'=>$height,
+            'BMI'=>$bmi,
+            'body_fat'=>$body_fat
+        );
+
+        $result = $this->db->update('body',$data,'userid='.$userid);
+        return $result;
     }
 
     public function find_body_info($userid){
@@ -60,12 +70,33 @@ class Sport_model extends CI_Model {
 
     public function find_by_user($userid){
         $result = $this->db->query("select * from sport where userid=".$userid);
+
         return $result->result();
     }
 
     public function find_week_info($userid){
-        $result = $this->db->query("select * from sport where userid=".$userid." limit 1,7 order by date desc");
-        return $result;
+        $result = $this->db->query("select * from sport where userid=".$userid." order by date desc limit 1,7 ");
+        return $result->result();
+    }
+
+    public function find_top_calorie(){
+        $result = $this->db->query("select * from user");
+        $userCount = $result->num_rows();
+        $maxNum = 10;
+        if($userCount<$maxNum){
+            $maxNum=$userCount;
+        }
+
+        $result = $this->db->query("select user.userid,T.total,user.avatar,user.username 
+                from user,
+                      (select userid,sum(calorie) as total
+                        from sport
+                        group BY userid
+                        ORDER BY total DESC 
+                        limit 1,".($maxNum+1).") T
+                where user.userid=T.userid");
+
+        return $result->result();
     }
 
 }

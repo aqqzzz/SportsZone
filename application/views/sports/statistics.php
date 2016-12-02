@@ -148,21 +148,27 @@ header("Content-Type: text/html; charset=utf-8");
                         <div class="sports-week">
                             <h1>本周运动状况</h1>
                             <div class="sports-overview">
-                                <span><i class="fa fa-clock-o fa-2x"></i>运动<mark id="week-sports-time">4</mark>天</span>
-                                <span><i class="fa fa-compass fa-2x"></i>跑步<mark id="week-sports-distance">30</mark>km</span>
-                                <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="week-sports-calorie">20.3k</mark>卡路里</span>
+                                <span><i class="fa fa-clock-o fa-2x"></i>运动<mark id="week-sports-time">
+                                        <?php echo $weekOverview['week_days']?>
+                                    </mark>天</span>
+                                <span><i class="fa fa-compass fa-2x"></i>跑步<mark id="week-sports-distance">
+                                        <?php echo $weekOverview['week_distance']?>
+                                    </mark>km</span>
+                                <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="week-sports-calorie">
+                                        <?php echo $weekOverview['week_calories']?>
+                                    </mark>卡路里</span>
                             </div>
                             <hr>
                             <div class="sports-time-analysis text-center">
                                 <h2>运动距离</h2>
-                                <div class="time-charts"></div>
-                                <span>共跑步<mark>30</mark>km</span>
+                                <div class="week-time-charts"></div>
+                                <span>共跑步<mark><?php echo $weekOverview['week_days']?></mark>km</span>
 
                             </div>
                             <div class="calorie-time-analysis text-center">
                                 <h2>运动燃烧热量</h2>
-                                <div class="calorie-charts"></div>
-                                <span>共消耗<mark>3.8</mark>千卡</span>
+                                <div class="week-calorie-charts"></div>
+                                <span>共消耗<mark><?php echo $weekOverview['week_calories']?></mark>千卡</span>
                                 <!--x轴 时间 y轴 消耗卡路里
                                 默认显示本周
                                 用户设置同上-->
@@ -173,12 +179,14 @@ header("Content-Type: text/html; charset=utf-8");
                             <h1>你在sports zone总共</h1>
                             <div class="sports-overview">
                                 <span><i class="fa fa-clock-o fa-2x"></i>运动<mark id="total-sports-time">
-                                        <?php
-
-                                        ?>
+                                        <?php echo $totalOverview['total_days']?>
                                     </mark>天</span>
-                                <span><i class="fa fa-compass fa-2x"></i>跑步<mark id="total-sports-distance">300</mark>km</span>
-                                <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="total-sports-calorie">420.3k</mark>卡路里</span>
+                                <span><i class="fa fa-compass fa-2x"></i>跑步<mark id="total-sports-distance">
+                                        <?php echo $totalOverview['total_distance']?>
+                                    </mark>km</span>
+                                <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="total-sports-calorie">
+                                        <?php echo $totalOverview['total_calories']?>
+                                    </mark>k卡路里</span>
                             </div>
 
                             <div class="sports-total-courage text-center">
@@ -188,6 +196,21 @@ header("Content-Type: text/html; charset=utf-8");
                                     <span>消耗肥肉(公斤)<br><mark>5</mark></span>
                                     <span>省93#汽油(升)<br><mark>2</mark></span>
                                 </div>
+                            </div>
+
+                            <div class="sports-time-analysis text-center">
+                                <h2>运动距离</h2>
+                                <div class="total-time-charts"></div>
+                                <span>共跑步<mark><?php echo $totalOverview['total_days']?></mark>km</span>
+
+                            </div>
+                            <div class="calorie-time-analysis text-center">
+                                <h2>运动燃烧热量</h2>
+                                <div class="total-calorie-charts"></div>
+                                <span>共消耗<mark><?php echo $totalOverview['total_calories']?></mark>千卡</span>
+                                <!--x轴 时间 y轴 消耗卡路里
+                                默认显示本周
+                                用户设置同上-->
                             </div>
                         </div>
 
@@ -201,10 +224,20 @@ header("Content-Type: text/html; charset=utf-8");
                         <div id="all-ranked">
                             <h2>达人排行榜</h2>
                             <div class="ranked-list">
+                                <ul class="list-group">
+                                    <?php foreach($topSportsInfo as $item):?>
+                                        <li class="list-group-item">
+                                            <a href="<?php echo site_url()."user_authentication/show_admin_page/".$item['userid']."/".$item['username']?>">
+                                                <img src="<?php echo $item['avatar']?>" class="img-circle img-responsive">
+                                                <span><?php echo $item['username']?></span>
+                                            </a>
+                                            <span class="badge"><?php echo $item['calories']?>千卡</span>
+                                        </li>
+                                    <?php endforeach;?>
 
+                                </ul>
                             </div>
-                            默认按照累计热量进行排序
-                            用户可以选择当天/7天/30天
+
                         </div>
                         <div id="friends-ranked">
                             用户关注的以及关注用户的 其他用户与用户 进行
@@ -216,11 +249,10 @@ header("Content-Type: text/html; charset=utf-8");
                     <div id="body-manage">
                         <h1>身体数据</h1>
                         <div class="body-statistic">
-                            <span>身高：<mark>168</mark>cm</span>
-                            <span>体重：<mark>54</mark>kg</span>
-                            <span>心率：<mark>70</mark>次/分钟</span>
-                            <span>BMI：<mark>19.1</mark></span>
-                            <span>体脂：<mark>26</mark></span>
+                            <span>身高：<mark id="height"><?php echo $bodyInfo['height']?></mark>cm</span>
+                            <span>体重：<mark id="weight"><?php echo $bodyInfo['weight']?></mark>kg</span>
+                            <span>BMI：<mark id="bmi"><?php echo $bodyInfo['BMI']?></mark></span>
+                            <span>体脂：<mark id="body-fat"><?php echo $bodyInfo['body_fat']?></mark></span>
 
                             <div class="bd-example">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">更改</button>
@@ -237,30 +269,26 @@ header("Content-Type: text/html; charset=utf-8");
                                                 <form>
                                                     <span class="form-group">
                                                         <label class="form-control-label">身高：</label>
-                                                        <input type="text" class="form-control" value="168">cm
+                                                        <input type="text" class="form-control" id="height-post" value="<?php echo $bodyInfo['height']?>">cm
                                                     </span>
                                                     <span class="form-group">
                                                         <label class="form-control-label">体重：</label>
-                                                        <input type="text" class="form-control" value="54">kg
-                                                    </span>
-                                                    <span class="form-group">
-                                                        <label class="form-control-label">心率：</label>
-                                                        <input type="text" class="form-control" value="70">次/分钟
+                                                        <input type="text" class="form-control" id="weight-post" value="<?php echo $bodyInfo['weight']?>">kg
                                                     </span>
                                                     <span class="form-group">
                                                         <label class="form-control-label">体脂：</label>
-                                                        <input type="text" class="form-control" value="26" readonly="readonly">
+                                                        <input type="text" class="form-control" readonly="readonly" id="body-fat-post" value="<?php echo $bodyInfo['body_fat']?>">
                                                     </span>
                                                     <span class="form-group">
                                                         <label class="form-control-label">BMI：</label>
-                                                        <input type="text" class="form-control" value="19.1" readonly="readonly">
+                                                        <input type="text" class="form-control" readonly="readonly" id="bmi-post" value="<?php echo $bodyInfo['BMI']?>">
                                                     </span>
 
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary">更改</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" id="change-body-bttn">更改</button>
                                             </div>
                                         </div>
                                     </div>
@@ -305,7 +333,261 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript">
     $(document).ready(function(){
+        $(function () {
+            $('.week-time-charts').highcharts({
+                title: {
+                    text: '本周运动距离',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '来自：追踪器',
+                    x: -20
+                },
+                xAxis: {
+                    categories: [
+                        <?php foreach($weekSportsInfo as $item):?>
+                            '<?php echo $item['date']?>',
+                        <?php endforeach;?>
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: '跑步距离(km)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: 'km'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name:'跑步距离',
+                    data: [
+                        <?php foreach($weekSportsInfo as $item):?>
+                            <?php echo $item['distance']?>,
+                        <?php endforeach;?>
+                    ]
+                }]
+            });
+        });
 
+        $(function () {
+            $('.week-calorie-charts').highcharts({
+                chart: {
+                    type:'area'
+                },
+                title: {
+                    text: '本周运动燃烧热量',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '来自：追踪器',
+                    x: -20
+                },
+                xAxis: {
+                    categories: [
+                        <?php foreach($weekSportsInfo as $item):?>
+                        '<?php echo $item['date']?>',
+                        <?php endforeach;?>
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: '燃烧热量(cal)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: 'cal'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name:'卡路里',
+                    data: [
+                        <?php foreach($weekSportsInfo as $item):?>
+                        <?php echo $item['distance']?>,
+                        <?php endforeach;?>
+                    ]
+                }]
+            });
+        });
+
+        $(function () {
+            $('.total-time-charts').highcharts({
+                title: {
+                    text: '总运动距离',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '来自：追踪器',
+                    x: -20
+                },
+                xAxis: {
+                    categories: [
+                        <?php foreach($totalSportsInfo as $item):?>
+                        '<?php echo $item['date']?>',
+                        <?php endforeach;?>
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: '跑步距离(km)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: 'km'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name:'跑步距离',
+                    data: [
+                        <?php foreach($totalSportsInfo as $item):?>
+                        <?php echo $item['distance']?>,
+                        <?php endforeach;?>
+                    ]
+                }]
+            });
+        });
+
+        $(function () {
+            $('.total-calorie-charts').highcharts({
+                chart: {
+                    type:'area'
+                },
+                title: {
+                    text: '总运动燃烧热量',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '来自：追踪器',
+                    x: -20
+                },
+                xAxis: {
+                    categories: [
+                        <?php foreach($totalSportsInfo as $item):?>
+                        '<?php echo $item['date']?>',
+                        <?php endforeach;?>
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: '燃烧热量(cal)'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: 'cal'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name:'卡路里',
+                    data: [
+                        <?php foreach($totalSportsInfo as $item):?>
+                        <?php echo $item['distance']?>,
+                        <?php endforeach;?>
+                    ]
+                }]
+            });
+        });
+
+        $(function () {
+            $('.body-charts').highcharts({
+                title: {
+                    text: 'BMI变化表',
+                    x: -20 //center
+                },
+                xAxis: {
+                    categories: ['2016/10/01', '2016/10/08', '2016/10/15', '2016/10/21']
+                },
+                yAxis: {
+                    title: {
+                        text: 'BMI'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name:'BMI',
+                    data: [18.4, 18.7, 19.1, 19.1]
+                }]
+            });
+        });
+
+        $('#change-body-bttn').unbind('click').click(function(){
+
+            var weight = $("#weight-post").val();
+            var height = $("#height-post").val()/100;
+            var body_fat = $("#body-fat-post").val();
+
+            alert ("<?php echo site_url()."sports/set_body_data/".$userInfo['userid']."/"?>"+weight+"/"+height+"/"+body_fat);
+
+            $('.modal#exampleModal').modal("hide");
+            $.ajax({
+                type:"POST",
+                url:"<?php echo site_url()."sports/set_body_data/".$userInfo['userid']."/"?>"+weight+"/"+height+"/"+body_fat,
+                dataType:'json',
+                data:{weight:weight,height:height,body_fat:body_fat},
+                success:function(result){
+
+                    if(result){
+
+
+                        $("#height").html(result.height*100);
+                        $("#weight").html(result.weight);
+                        $("#body-fat").html(result.body_fat);
+                        $("#bmi").html(result.BMI);
+
+
+                    }
+                }
+            });
+        });
     })
 </script>
 
