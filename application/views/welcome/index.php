@@ -1,4 +1,99 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    $userid = ($this->session->userdata['logged_in']['userid']);
+    $username = ($this->session->userdata['logged_in']['username']);
+
+} else {
+    header("location: user_authentication/login_process");
+}
+header("Content-Type: text/html; charset=utf-8");
+
+?>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Sports Zone</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="<?=base_url();?>assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="<?=base_url();?>assets/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="<?=base_url();?>assets/css/index.css" rel="stylesheet">
+    <link href="<?=base_url();?>assets/css/navbar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<body id="page-top">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
+                <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+        </div>
+
+        <!--到其他页面的导航按钮-->
+        <div class="collapse navbar-collapse" id="header-nav">
+            <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="<?php echo base_url()?>">Home</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<?php echo site_url()."activity/show_all_act/"."0/1"?>">单人PK</a></li>
+                            <li><a href="<?php echo site_url()."activity/show_all_act/"."1/1"?>">多人竞赛</a></li>
+                            <li class="divider"></li>
+                            <li><a href="<?php echo site_url()."activity/show_all_act/"."2/1"?>">小组活动</a></li>
+                            <li class="divider"></li>
+                            <li><a href="<?php echo site_url()."activity/create_activity"?>"><i class="fa fa-plus-circle text-center"></i></a></li>
+                        </ul>
+                    </li>
+                    <li id="community-nav">
+                        <a class="page-scroll" href="<?php echo site_url()."community/show_com_page/".$userid?>">Community</a>
+                    </li>
+
+                    <li>
+                        <a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">Statistic</a>
+                    </li>
+
+                    <li>
+                        <a href="<?php echo site_url()."user_authentication/login_process"?>">User</a>
+                    </li>
+
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact us</a>
+                    </li>
+
+
+
+                </ul>
+        </div><!-- /.navbar-collapse-->
+    </div>  <!--/.container-fluid-->
+</nav>
 
 
     <header>

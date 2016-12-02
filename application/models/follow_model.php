@@ -19,7 +19,8 @@ class Follow_model extends CI_Model {
 
     //获取该用户所有的关注列表
     public function get_all_following($userid){
-        $result = $this->db->query("select user.* from follow,user where follow.userid=".$userid." and follow.followid=user.userid");
+
+        $result = $this->db->query("select user.*,follow.followid from follow,user where follow.userid=".$userid." and follow.followid=user.userid");
         if($result->num_rows()==0){
             return false;
         }else{

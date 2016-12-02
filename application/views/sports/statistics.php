@@ -172,7 +172,11 @@ header("Content-Type: text/html; charset=utf-8");
                         <div class="sports-total">
                             <h1>你在sports zone总共</h1>
                             <div class="sports-overview">
-                                <span><i class="fa fa-clock-o fa-2x"></i>运动<mark id="total-sports-time">70</mark>天</span>
+                                <span><i class="fa fa-clock-o fa-2x"></i>运动<mark id="total-sports-time">
+                                        <?php
+
+                                        ?>
+                                    </mark>天</span>
                                 <span><i class="fa fa-compass fa-2x"></i>跑步<mark id="total-sports-distance">300</mark>km</span>
                                 <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="total-sports-calorie">420.3k</mark>卡路里</span>
                             </div>
@@ -299,7 +303,11 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
 
+<script type="text/javascript">
+    $(document).ready(function(){
 
+    })
+</script>
 
 </body>
 </html>

@@ -41,10 +41,13 @@
     })
 
     $('.card').affix({
+
         offset: {
             top: 300
         }
+
     })
+
 
     /*$('.edit-message').affix({
         offset: {

@@ -21,6 +21,8 @@ class user_authentication extends CI_Controller {
         $this->load->model('user_model');
         $this->load->model('follow_model');
 
+        $this->load->model('news_model');
+
     }
 
     public function index(){
@@ -73,7 +75,25 @@ class user_authentication extends CI_Controller {
         if($this->form_validation->run() == FALSE) {
 
             if (isset($this->session->userdata['logged_in'])) {
+                $userid = $this->session->userdata['logged_in']['userid'];
                 $data['userInfo']=$this->session->userdata['logged_in'];
+
+                $result = $this->news_model->find_by_user($userid);
+                if($result){
+                    $i=0;
+                    foreach ($result as $item){
+                        $data['newsInfo'][$i] = array(
+                            'newsid'=>$item->newsid,
+                            'authorid'=>$item->authorid,
+                            'reltime'=>$item->reltime,
+                            'content'=>$item->content,
+                        );
+                        $i = $i+1;
+                    }
+
+                }else{
+                    $data['null_news'] = "这里还没有动态";
+                }
 
                 $this->load->view('admin/admin_page',$data);
             }else {
@@ -91,7 +111,7 @@ class user_authentication extends CI_Controller {
                 $username = $this->input->post('username');
                 $result = $this->user_model->read_user_information($username);
 
-                    $session_data = array(
+                    $data = array(
                         'userid'=>$result->userid,
                         'username'=>$result->username,
                         'avatar'=>$result->avatar,
@@ -99,10 +119,28 @@ class user_authentication extends CI_Controller {
                         'cityid'=>$result->cityid
                     );
 
-                $this->session->set_userdata('logged_in',$session_data);
+                $result = $this->news_model->find_by_user($result->userid);
+                if($result){
+                    $i=0;
+                    foreach ($result as $item){
+                        $data['newsInfo'][$i] = array(
+                            'newsid'=>$item->newsid,
+                            'authorid'=>$item->authorid,
+                            'reltime'=>$item->reltime,
+                            'content'=>$item->content,
+                        );
+                        $i = $i+1;
+                    }
+
+                }else{
+                    $data['null_news'] = "这里还没有动态";
+                }
+
+                $this->session->set_userdata('logged_in',$data);
                 $data['userInfo'] = $this->session->userdata['logged_in'];
 
                 $this->load->view('admin/admin_page',$data);
+
 
             }else{
                 $data = array(
@@ -160,6 +198,22 @@ class user_authentication extends CI_Controller {
                 'sex'=>$result->sex,
                 'cityid'=>$result->cityid
             );
+
+            $result = $this->news_model->find_by_user($userid);
+            if($result){
+                $i=0;
+                foreach ($result as $item){
+                    $data['newsInfo'][$i] = array(
+                        'newsid'=>$item->newsid,
+                        'authorid'=>$item->authorid,
+                        'reltime'=>$item->reltime,
+                        'content'=>$item->content,
+                    );
+                    $i = $i+1;
+                }
+            }else{
+                $data['null_news'] = "这里还没有动态";
+            }
 
 
         }
@@ -312,6 +366,8 @@ class user_authentication extends CI_Controller {
         }
     }
 
+
+    /*---------------------关注---------------------*/
     //关注用户 操作用户，被关注用户
     public function follow($userid, $followid){
         $data = array(
@@ -319,13 +375,22 @@ class user_authentication extends CI_Controller {
             'followid'=>$followid
         );
         $follow = $this->follow_model->insert($data);
-        return $follow;
+        if($follow!=false){
+            echo 1;
+        }else{
+            echo 0;
+        }
     }
 
     //取关
     public function unfollow($userid, $unfollowid){
-        $data = $this->follow_model->delete($userid,$unfollowid);
-        return $data;
+        $result = $this->follow_model->delete($userid,$unfollowid);
+
+        if($result!=false) {
+            echo 1;
+        }else{
+            echo 0;
+        }
     }
 
     //加载关注列表界面
@@ -374,13 +439,20 @@ class user_authentication extends CI_Controller {
 
     public function is_following($userid,$followingid){
         $result = $this->follow_model->get_all_following($userid);
-        $is_following = false;
-        foreach($result as $item){
-            if($item->followid==$followingid){
-                $is_following=true;
+        $is_following = 0;
+        if($result==false){
+            echo 0;
+        }else{
+
+            foreach($result as $item){
+                if(($item->followid)==$followingid){
+                    $is_following=1;
+
+                }
             }
+            echo $is_following;
         }
-        return $is_following;
+
     }
 
     //获取粉丝列表
@@ -395,4 +467,5 @@ class user_authentication extends CI_Controller {
         echo json_encode($data);
 
     }
+
 }

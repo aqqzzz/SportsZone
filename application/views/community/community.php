@@ -113,11 +113,11 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="body">
             <div class="row">
                 <div class="user">
-                    <div class="col-md-3 com-sm-3 nav">
-                        <div class="card">
-                            <img class="card-img-top img-responsive" src="<?php echo $userInfo['avatar']?>" alt="Card image cap">
+                    <div class="col-md-3 com-sm-2 nav">
+                        <div class="card hidden-xs hidden-sm">
+                            <img class="card-img-top img-responsive" src="<?php echo $userInfo->avatar?>" alt="Card image cap">
                             <div class="card-block user-information">
-                                <h4 class="card-title"><?php echo $userInfo['username']?></h4>
+                                <h4 class="card-title"><?php echo $userInfo->username?></h4>
                                 <p class="card-text">不爱跳舞的迷妹不是好程序猿</p>
                             </div>
 
@@ -130,173 +130,67 @@ header("Content-Type: text/html; charset=utf-8");
 
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><a href="<?php echo site_url()."user_authentication/login_process"?>">我的动态</a></li>
-                                <li class="list-group-item"><a href="<?php echo site_url()."sports/show_sports_page/".$userid?>">我的运动</a></li>
-
+                                <li class="list-group-item"><a type="button" data-toggle="modal" data-target="#myModal" class="create-btn"><i class="fa fa-pencil-square-o">发布动态</i></a></li>
                             </ul>
-
-
                         </div>
-
                     </div>
+                </div>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">有什么新鲜事想和大家分享</h4>
+                            </div>
+                            <div class="modal-body">
+                                <textarea class="form-control" rows="5" id="news-content" name="news-content"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" id="release-bttn">发布</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
                 </div>
 
 
                 <div class="col-md-9 col-sm-9 user-message-box">
                     <div class="credit-message">
                         <p>有什么新鲜事想告诉大家</p>
-                        <textarea rows="5"></textarea>
-                        <button class="btn btn-default">发布</button>
+                        <hr>
+
+                        <textarea class="form-control" rows="5" id="news-content" name="news-content"></textarea>
+                        <button class="btn btn-default" id="release-bttn" name="submit">发布</button>
+
                     </div>
-                    <div class="message-item">
-                        <div class="message-header">
+                    <?php foreach ($newsInfo as $item):?>
+                        <div id="user-message-box">
+                            <div class="message-item">
+                                <div class="message-header">
 
-                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
+                                    <img src="<?php echo $item->avatar?>" class="img-circle">
+                                    <p class="user-name"><?php echo $item->username?><br><?php echo $item->reltime?></p>
+                                </div>
+                                <div class="message-content">
+                                    <?php echo $item->content?>;
+                                </div>
+                                <div class="message-comment">
+                                    <ul class="nav nav-tabs nav-justified">
+                                        <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
+                                        <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
+                                    </ul>
 
+                                </div>
+                                <div class="message-favor">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
-                        </div>
-                        <div class="message-favor">
-                            <i class="fa fa-thumbs-up"></i>
-                            <a href="<?php echo site_url()."user_authentication/show_admin_page/1/啊扣扣0"?>"
-                            <img src="<?php echo base_url()."assets/images/users/1.jpg"?>" class="img-circle">
-                            </a>
-                        </div>
-                    </div>
+                    <?php endforeach;?>
 
-                    <div class="message-item">
-                        <div class="message-header">
-                            <a href="<?php echo site_url()."user_authentication/show_admin_page/1/啊扣扣0"?>">
-                            <img src="<?php echo base_url()."assets/images/users/1.jpg"?>" class="img-circle">
-                            </a>
-                            <p class="user-name">啊扣扣0<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <a href="<?php echo site_url()."user_authentication/show_admin_page/2/啊扣扣1"?>">
-                            <img src="<?php echo base_url()."assets/images/users/2.jpg"?>" class="img-circle">
-                            </a>
-                            <p class="user-name">啊扣扣1<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <a href="<?php echo site_url()."user_authentication/show_admin_page/5/啊扣扣2"?>">
-                            <img src="<?php echo base_url()."assets/images/users/3.jpg"?>" class="img-circle">
-                                </a>
-                            <p class="user-name">啊扣扣2<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?php echo base_url()."assets/images/users/6.jpg"?>" class="img-circle">
-                            <p class="user-name">张耳朵<br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
-                                <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
-                            </ul>
-                        </div>
-                    </div>
 
 
                 </div>
@@ -307,35 +201,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 
     </div>
-    <!--底部翻页-->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li>
-                    <a href="#" class="active">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!--翻页结束-->
+
 
 </section>
 
@@ -359,7 +225,86 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+       $(".credit-message #release-bttn").unbind("click").click(function(){
+           var content = $(".credit-message #news-content").val();
+           var user = <?php echo $userid?>;
 
+           if(content==null){
+
+           }
+
+           $.ajax({
+               type:"POST",
+               url:"<?php echo site_url()."community/create_news/"?>"+user+"/"+content,
+               dataType:'json',
+               data:{userid:user,content:content},
+               success:function(result){
+                   if(result){
+
+
+                       var news_item='<div class="message-item">'+
+                           '<div class="message-header"> ' +
+                           '<img src="'+result.result_array[0].avatar+'" class="img-circle"> ' +
+                           '<p class="user-name">'+result.result_array[0].username+'<br>'+result.result_array[0].reltime+'</p> ' +
+                           '</div> ' +
+                           '<div class="message-content"> ' +
+                           result.result_array[0].content+
+                           '</div> ' +
+                           '<div class="message-comment"> ' +
+                           '<ul class="nav nav-tabs nav-justified"> ' +
+                           '<li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li> ' +
+                           '<li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li> ' +
+                           '</ul> ' +
+                           '</div> ' +
+                           '<div class="message-favor"> ' +
+                           '</div> ' +
+                           '</div>';
+                       $("#user-message-box").prepend(news_item);
+                   }
+               }
+           });
+       })
+
+        $("#myModal #release-bttn").on('click',function(){
+            var content = $("#myModal .modal-body textarea").val();
+            var user = <?php echo $userid?>;
+
+            $("#myModal").modal('hide');
+            $.ajax({
+                type:"POST",
+                url:"<?php echo site_url()."community/create_news/"?>"+user+"/"+content,
+                dataType:'json',
+                data:{userid:user,content:content},
+                success:function(result){
+                    if(result){
+                        var news_item='<div class="message-item">'+
+                            '<div class="message-header"> ' +
+                            '<img src="'+result.result_array[0].avatar+'" class="img-circle"> ' +
+                            '<p class="user-name">'+result.result_array[0].username+'<br>'+result.result_array[0].reltime+'</p> ' +
+                            '</div> ' +
+                            '<div class="message-content"> ' +
+                            result.result_array[0].content+
+                            '</div> ' +
+                            '<div class="message-comment"> ' +
+                            '<ul class="nav nav-tabs nav-justified"> ' +
+                            '<li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li> ' +
+                            '<li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li> ' +
+                            '</ul> ' +
+                            '</div> ' +
+                            '<div class="message-favor"> ' +
+                            '</div> ' +
+                            '</div>';
+                        $("#user-message-box").prepend(news_item);
+
+                        $(".null-news").css("display","none");
+                    }
+                }
+            });
+        })
+    });
+</script>
 
 </body>
 </html>

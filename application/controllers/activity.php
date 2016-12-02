@@ -253,7 +253,6 @@ class activity extends CI_Controller {
     //退出活动
     public function exit_activity($userid,$activityid){
         $this->parti_act_model->delete($userid,$activityid);
-        $this->show_all_act();
     }
 
     //参加活动

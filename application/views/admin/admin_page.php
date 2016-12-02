@@ -111,7 +111,7 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="header text-center">
             <div class="user-portrait">
                 <div class="portfolio-box" id="img-ref">
-                    <a href="">
+                    <a href="<?php echo site_url()."user_authentication/show_admin_page/".$userInfo['userid']."/".$userInfo['username']?>">
                         <img src="<?php echo $userInfo['avatar']?>" class="img-circle" alt="avator">
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
@@ -137,8 +137,8 @@ header("Content-Type: text/html; charset=utf-8");
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="active"><a href="#" id="main-page">我的主页</a></li>
-                        <li><a href="<?php echo site_url()."sports/show_sports_page/".$userInfo['userid']?>" id="sport">我的运动</a></li>
+                        <li class="active"><a href="#" id="main-page">main</a></li>
+                        <li><a href="<?php echo site_url()."sports/show_sports_page/".$userInfo['userid']?>" id="sport">sport</a></li>
                     </ul>
                 </div>
             </div>
@@ -177,36 +177,70 @@ header("Content-Type: text/html; charset=utf-8");
                     </div>
 
                     <div class="edit-message text-center" data-spy="affix" data-offset-top="820">
-                        <a href="#"><i class="fa fa-pencil-square-o fa-2x"></i></a>
-                        <br><a href="create-activity.html">发布活动</a>
+                        <a type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil-square-o fa-2x"></i></a>
                     </div>
 
 
                 </div>
 
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">有什么新鲜事想和大家分享</h4>
+                            </div>
+                            <div class="modal-body">
+                                <textarea class="form-control" rows="5" id="news-content" name="news-content"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" id="release-bttn">提交更改</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+
                 <div class="col-md-9 col-xs-10 user-message-box">
-                    <div class="message-item">
-                        <div class="message-header">
-                            <img src="<?php echo $userInfo['avatar']?>" class="img-circle">
-                            <p class="user-name"><?php echo $userInfo['username']?><br>10月19日 20:11</p>
-                        </div>
-                        <div class="message-content">
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                            这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容这是动态内容
-                        </div>
-                        <div class="message-comment">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li><a type="button" id="favor"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
+                    <?php if(isset($newsInfo)){?>
+                        <?php foreach ($newsInfo as $item):?>
+                            <div id="message-content-box">
+                                <div class="message-item">
+                                    <div class="message-header">
 
-                            </ul>
+                                        <img src="<?php echo $userInfo['avatar']?>" class="img-circle">
+                                        <p class="user-name"><?php echo $userInfo['username']?><br><?php echo $item['reltime']?></p>
+                                    </div>
+                                    <div class="message-content">
+                                        <?php echo $item['content']?>;
+                                    </div>
+                                    <div class="message-comment">
+                                        <ul class="nav nav-tabs nav-justified">
+                                            <li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li>
+                                            <li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li>
+                                        </ul>
 
+                                    </div>
+                                    <div class="message-favor">
+                                        <i class="fa fa-thumbs-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php endforeach;?>
+                    <?php }else{?>
+
+                        <div class="null-news" style="display:none">
+                            <p>
+                                <?php if(isset($null_news)) {
+                                    echo $null_news;
+                                }?>
+                            </p>
 
                         </div>
-                        <div class="message-favor">
-                            <i class="fa fa-thumbs-up"></i>
-                            <img src="<?=base_url();?>assets/images/users/1.jpg" class="img-circle">
-                        </div>
-                    </div>
+                    <?php }?>
+
                 </div>
                 <div class="user-follow col-md-9 col-xs-10" id="following-box" style="display: none">
 
@@ -219,35 +253,7 @@ header("Content-Type: text/html; charset=utf-8");
 
 
     </div>
-    <!--底部翻页-->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li>
-                    <a href="#" class="active">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!--翻页结束-->
+
 
 </section>
 
@@ -266,14 +272,19 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript" src="<?=base_url();?>assets/js/scripts.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(function(){
         var session_user = <?php echo $userid?>;
         var page_user = <?php echo $userInfo['userid']?>;
         var follow_text="我的关注";
         var follower_text="我的粉丝";
         var activity_text = "我的活动";
+        var sports_text = "我的运动";
 
         if(session_user==page_user){
+
+            $('.user-navbar .row #main-page').html("我的主页");
+            $('.user-navbar .row #sport').html("我的运动");
+
             $('#img-ref .project-category').html("设置");
             $('#img-ref a').attr("href","<?php echo site_url()."user_authentication/user_info_setting"?>");
 
@@ -282,14 +293,8 @@ header("Content-Type: text/html; charset=utf-8");
 
 
         }else{
-            var is_following = '<?php echo site_url()."user_authentication/is_following/".$userid."/".$userInfo['userid']?>'';
-            alert(page_user);
-            alert(is_following);
-            if(is_following){
-                $('#img-ref .project-category').html("取消关注");
-            }else{
-                $('#img-ref .project-category').html("关注");
-            }
+
+            appendFollowListener(session_user,page_user);
 
             $('.user-navbar .row #main-page').html("Ta的主页");
             $('.user-navbar .row #sport').html("Ta的运动");
@@ -304,6 +309,7 @@ header("Content-Type: text/html; charset=utf-8");
             follow_text="Ta的关注";
             follower_text="Ta的粉丝";
             activity_text="Ta的活动";
+            sports_text="Ta的运动";
 //            $('#img-ref a').attr("href","<?php //echo site_url()."user_authentication/user_info_setting"?>//");
         }
 
@@ -402,15 +408,59 @@ header("Content-Type: text/html; charset=utf-8");
             $(".message-favor").append(person);
         })
 
+        appendCreateActListener();
+
 
     });
 
-    function unfollowHandler($userid,$followid){
+    function appendFollowListener(session_user,page_user){
 
-    }
+        $.ajax({
+            type:"GET",
+            url:"<?php echo site_url()."user_authentication/is_following/"?>"+session_user+"/"+page_user,
+            dataType:'json',
+            data:{userid:session_user, followid:page_user},
+            success:function(is_following){
+                if(is_following){
+                    $('#img-ref .project-category').html("取消关注");
+                }else{
+                    $('#img-ref .project-category').html("关注");
+                }
+                $('#img-ref .project-category').unbind("click").click(function(){
+                    if(is_following){
+                        $('#img-ref .project-category').html("取消关注");
+                        $.ajax({
+                            type:"POST",
+                            url:"<?php echo site_url()."user_authentication/unfollow/"?>"+session_user+"/"+page_user,
+                            dataType:'json',
+                            data:{userid:session_user,unfollowid:page_user},
+                            success:function(result){
+                                if(result){
+                                    $('#img-ref .project-category').html("关注");
+                                }
+                            }
+                        });
 
-    function followHandler($userid,$followid){
+                    }else{
+                        $('#img-ref .project-category').html("关注");
+                        $.ajax({
+                            type:"POST",
+                            url:"<?php echo site_url()."user_authentication/follow/"?>"+session_user+"/"+page_user,
+                            dataType:'json',
+                            data:{userid:session_user,unfollowid:page_user},
+                            success:function(result){
+                                if(result){
+                                    $('#img-ref .project-category').html("取消关注");
+                                }
+                            }
+                        });
 
+                    }
+
+                })
+
+            }
+        });
     }
 
     function loadMyAct(userid,type_array,activity_text){
@@ -464,7 +514,52 @@ header("Content-Type: text/html; charset=utf-8");
             body+=elem;
         });
         $('.user-act#my-activity-box').append(body);
+
+
     }
+
+    function appendCreateActListener(){
+        $("#myModal #release-bttn").on('click',function(){
+            var content = $("#myModal .modal-body textarea").val();
+            var user = <?php echo $userid?>;
+
+            $("#myModal").modal('hide');
+            $.ajax({
+                type:"POST",
+                url:"<?php echo site_url()."community/create_news/"?>"+user+"/"+content,
+                dataType:'json',
+                data:{userid:user,content:content},
+                success:function(result){
+                    if(result){
+                        var news_item='<div class="message-item">'+
+                            '<div class="message-header"> ' +
+                            '<img src="'+result.result_array[0].avatar+'" class="img-circle"> ' +
+                            '<p class="user-name">'+result.result_array[0].username+'<br>'+result.result_array[0].reltime+'</p> ' +
+                            '</div> ' +
+                            '<div class="message-content"> ' +
+                            result.result_array[0].content+
+                            '</div> ' +
+                            '<div class="message-comment"> ' +
+                            '<ul class="nav nav-tabs nav-justified"> ' +
+                            '<li><a href="#"><i class="fa fa-thumbs-o-up"></i>点赞</a></li> ' +
+                            '<li><a href="#"><i class="fa fa-comment-o"></i>评论</a></li> ' +
+                            '</ul> ' +
+                            '</div> ' +
+                            '<div class="message-favor"> ' +
+                            '</div> ' +
+                            '</div>';
+                        $(".user-message-box").prepend(news_item);
+
+                        $(".null-news").css("display","none");
+                    }
+                }
+            });
+        })
+
+
+    }
+
+
 
 
 </script>
