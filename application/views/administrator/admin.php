@@ -102,6 +102,9 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="row">
             <div class="col-md-2 col-md-offset-1" id="guiding">
                 <div class="list-group hidden-sm hidden-xs">
+                    <h2>举报</h2>
+                    <hr>
+                        <a type="button" class="list-group-item report-list active" id="t-1" myid="1">举报列表</a>
                     <h2>竞赛</h2>
                     <hr>
                     <!--                    <a href="--><?php //echo site_url()."activity/show_all_act/0/1"?><!--" class="list-group-item total-act" id="t0">单人PK</a>-->
@@ -141,39 +144,50 @@ header("Content-Type: text/html; charset=utf-8");
                     </div>
 
                 </section>
+                <div id="null-message">
+                    <?php if(isset($null_message)){
+                        echo "<div class='text-center' style='padding:200px'>";
+                        echo $null_message;
+                        echo "</div>";
+                    ?>
+                </div>
+
+                <?php }else{?>
                 <section id="act-content">
-                    <?php foreach($actItem as $item):?>
-                        <div class="col-sm-6 col-md-6 portfolio-box">
-                            <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>">
-                                <img class="img-responsive img-hover" src="<?php echo $item->des_image?>" alt="<?php echo $item->activityname?>">
-                            </a>
-                            <h3>
-                                <a href="<?php echo site_url()."activity/get_single_act/".$item->activityid?>"><?php echo $item->activityname?></a>
-                            </h3>
-                            <p class="act-type">
-                                <?php
-                                $type = $item->type;
-                                if($type==0){
-                                    $type = '单人PK';
-                                }else if($type==1){
-                                    $type = '多人竞赛';
-                                }else if($type==2){
-                                    $type = '小组活动';
-                                }
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <h3>待审核活动列表</h3>
+                            <hr>
+                            <thead>
+                                <tr>
+                                        <th>举报编号</th>
+                                        <th>活动编号</th>
+                                        <th>活动名称</th>
+                                        <th>举报者</th>
+                                        <th>举报理由</th>
+                                        <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                echo $type;
+                            <?php foreach($reportInfo as $item):?>
+                                <tr type="button">
+                                    <td><?php echo $item['reportid']?></td>
+                                    <td><?php echo $item['actid']?></td>
+                                    <td><?php echo $item['actname']?></td>
+                                    <td><?php echo $item['username']?></td>
+                                    <td><?php echo $item['reason']?></td>
+                                    <td><button class="btn btn-primary ignore">忽略</button></td>
+                                </tr>
+                            <?php endforeach;?>
 
-                                ?>
-                            </p>
-                            <p class="des-content">
-                                <?php echo $item->description;?>
-                            </p>
-                            <button class="btn btn-primary" id="查看详情" onclick='window.location="<?php echo site_url()."activity/get_single_act/".$item->activityid;?>"'>查看详情</button>
 
-                        </div>
 
-                    <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
+                <?php }?>
 
 
 
@@ -239,8 +253,9 @@ header("Content-Type: text/html; charset=utf-8");
         loadMyAct(userid,type_array);
         loadMyCreateAct(userid,type_array);
 
+        reloadReportList();
 
-
+        addTableListener();
     })
 
     function reloadActByType(type_array){
@@ -336,6 +351,9 @@ header("Content-Type: text/html; charset=utf-8");
         });
         $('#act-content').append(body);
 
+        $(".report-list").removeClass("active");
+        $("#null-message").css("display:none");
+
         var origin_a_class="list-group-item total-act";
         for(var i = 0; i <= 2; i++){
             if(i!=type){
@@ -345,6 +363,8 @@ header("Content-Type: text/html; charset=utf-8");
                 $("#guiding #t"+i).attr("class",new_class);
             }
         }
+
+
 
 
 
@@ -371,6 +391,96 @@ header("Content-Type: text/html; charset=utf-8");
 
         $(".pagination").append('<li><a type="button" class="total-act" id="t"'+type+' myid="'+(page+1)+'" >&raquo;</a></li>');
 
+
+    }
+
+    function reloadReportList(){
+        $(".report-list").unbind('click').click(function () {
+            $(".report-list").addClass("active");
+
+            $("#guiding .total-act").removeClass("active");
+
+            $.ajax({
+               type:"GET",
+                url:"<?php echo site_url()."/activity/get_all_report"?>",
+                dataType:'json',
+                success:function(result){
+                    if(result){
+                        $("#act-content").html("");
+
+                        var header = $('<div class="table-responsive"> ').appendTo("#act-content");
+                        var caption = $('<h3>待审核活动列表</h3>').appendTo(header);
+                        var hr = $('<hr>').appendTo(header);
+                        var table = $('<table class="table table-hover table-striped"> ').appendTo(header);
+
+
+                        var thead = $('<thead>').appendTo(table);
+                        var headContent = $('<tr> ' +
+                                '<th>举报编号</th>'+
+                            '<th>活动编号</th> ' +
+                            '<th>活动名称</th> ' +
+                            '<th>举报者</th> ' +
+                            '<th>举报理由</th> ').appendTo(thead);
+
+                        var tbody = $('<tbody>').appendTo(table);
+
+                        $.each(result,function(n,value){
+
+                            var elem='<tr> ' +
+                                '<td>'+value.reportid+'</td>'+
+                                '<td>'+value.actid+'</td> ' +
+                                '<td>'+value.actname+'</td> ' +
+                                '<td>'+value.username+'</td> '+
+                                '<td>'+value.reason+'</td> ' +
+                                '</tr>';
+                            tbody.append(elem);
+                        })
+
+                        addTableListener();
+
+
+                    }
+                }
+            });
+        });
+    }
+
+    function addTableListener(){
+        $('table tbody tr').on('click', function () {
+            var activityid = $(this).find('td:eq(1)').text();
+            window.location="<?php echo site_url()."activity/get_single_act/"?>"+activityid;
+
+        } );
+
+        $("tr").hover(
+            function () {
+                $(this).addClass("hover");
+            },
+            function () {
+                $(this).removeClass("hover");
+            }
+        );
+
+//        $('table').on('click','.ignore',function(){
+//            event.stopPropagation();
+//
+//            $(this).closest ('tr').remove ();
+//        })
+
+        //不能真正删除，只能删掉界面上的
+        $('table tbody tr .ignore').on('click',function(){
+           event.stopPropagation();
+            $(this).closest('tr').remove();
+
+            alert(reportid);
+            $.ajax({
+                type:"POST",
+                url:"<?php echo site_url()."activity/delete_report/"?>"+reportid,
+                dataType:'json',
+                data:{reportid:reportid},
+
+            });
+        });
 
     }
 </script>

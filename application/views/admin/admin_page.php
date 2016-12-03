@@ -169,10 +169,10 @@ header("Content-Type: text/html; charset=utf-8");
 
                     <div class="user-statistic">
                         <div class="list-group">
-                            <p class="list-group-item">本周运动天数：4天</p>
-                            <p class="list-group-item">本周运动量：30km</p>
-                            <p class="list-group-item">本周运动消耗热量：6.8千卡</p>
-                            <a href="statistic.html" class="list-group-item text-center">查看更多</a>
+                            <p class="list-group-item">本周运动天数：<?php echo $weekOverview['days']?>天</p>
+                            <p class="list-group-item">本周运动量：<?php echo $weekOverview['distance']?>km</p>
+                            <p class="list-group-item">本周运动消耗热量：<?php echo $weekOverview['calories']?>千卡</p>
+                            <a href="<?php echo site_url()."sports/show_sports_page/".$userInfo['userid']?>" class="list-group-item text-center">查看更多</a>
                         </div>
                     </div>
 
@@ -246,6 +246,7 @@ header("Content-Type: text/html; charset=utf-8");
 
                 </div>
                 <div class="user-act col-md-9 col-xs-10" id="my-activity-box" style="display:none"></div>
+
 
 
             </div>
@@ -333,8 +334,12 @@ header("Content-Type: text/html; charset=utf-8");
                         $(".user-follow#following-box").append(header);
 
                         if(result['null_message']!=null){
-                            var null_message = "<div class='null-message text-center'>"+result['null_message']+"</div>";
+
+                            $(".null-news").html("<p>"+result['null_message']+"</p>");
+                            $(".null-news").css("display","block");
                         }else{
+
+
                             $.each(result['following'],function(n,value){
                                 var output_text='<div class="col-lg-5 col-md-5 col-sm-5 following-user">'+
                                     '<div class="image">'+
@@ -376,8 +381,10 @@ header("Content-Type: text/html; charset=utf-8");
                         $(".user-follow#following-box").append(header);
 
                         if(result['null_message']!=null){
-                            var null_message = "<div class='null-message text-center'>"+result['null_message']+"</div>";
+                            $(".null-news").html("<p>"+result['null_message']+"</p>");
+                            $(".null-news").css("display","block");
                         }else{
+
                             $.each(result['followers'],function(n,value){
                                 var output_text='<div class="col-lg-5 col-md-5 col-sm-5 following-user">'+
                                     '<div class="image">'+

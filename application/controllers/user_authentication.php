@@ -23,6 +23,8 @@ class user_authentication extends CI_Controller {
 
         $this->load->model('news_model');
 
+        $this->load->model('sport_model');
+
     }
 
     public function index(){
@@ -95,6 +97,33 @@ class user_authentication extends CI_Controller {
                     $data['null_news'] = "这里还没有动态";
                 }
 
+                //周运动数据
+                $user_week_sport = $this->sport_model->find_week_info($userid);
+                $i = 0;
+                $week_days=0;
+                $week_distance = 0;
+                $week_calories = 0;
+                foreach($user_week_sport as $item){
+
+                    $distance = round($item->distance,2);
+                    if($distance!=0) $week_days+=1;
+                    $calorie = round($item->calorie,2);
+                    $data['weekSportsInfo'][$i]=array(
+                        'date'=>$item->date,
+                        'distance'=>$distance,
+                        'calorie'=>$calorie
+                    );
+
+                    $week_distance+=$distance;
+                    $week_calories+=$calorie;
+                    $i = $i+1;
+                }
+                $data['weekOverview']=array(
+                    'days'=>$week_days,
+                    'distance'=>$week_distance,
+                    'calories'=>round($week_calories/1000,2)
+                );
+
                 $this->load->view('admin/admin_page',$data);
             }else {
                 $this->load->view('login/login_form');
@@ -136,8 +165,39 @@ class user_authentication extends CI_Controller {
                     $data['null_news'] = "这里还没有动态";
                 }
 
+                //周运动数据
+                $user_week_sport = $this->sport_model->find_week_info($data['userid']);
+                $i = 0;
+                $week_days=0;
+                $week_distance = 0;
+                $week_calories = 0;
+                foreach($user_week_sport as $item){
+
+                    $distance = round($item->distance,2);
+                    if($distance!=0) $week_days+=1;
+                    $calorie = round($item->calorie,2);
+                    $data['weekSportsInfo'][$i]=array(
+                        'date'=>$item->date,
+                        'distance'=>$distance,
+                        'calorie'=>$calorie
+                    );
+
+                    $week_distance+=$distance;
+                    $week_calories+=$calorie;
+                    $i = $i+1;
+                }
+                $data['weekOverview']=array(
+                    'days'=>$week_days,
+                    'distance'=>$week_distance,
+                    'calories'=>round($week_calories/1000,2)
+                );
+
                 $this->session->set_userdata('logged_in',$data);
                 $data['userInfo'] = $this->session->userdata['logged_in'];
+
+                if($data['userid']==0){
+                    redirect("activity/show_admin_page/-1/1/6");
+                }
 
                 $this->load->view('admin/admin_page',$data);
 
@@ -215,8 +275,34 @@ class user_authentication extends CI_Controller {
                 $data['null_news'] = "这里还没有动态";
             }
 
-
         }
+
+        //周运动数据
+        $user_week_sport = $this->sport_model->find_week_info($userid);
+        $i = 0;
+        $week_days=0;
+        $week_distance = 0;
+        $week_calories = 0;
+        foreach($user_week_sport as $item){
+
+            $distance = round($item->distance,2);
+            if($distance!=0) $week_days+=1;
+            $calorie = round($item->calorie,2);
+            $data['weekSportsInfo'][$i]=array(
+                'date'=>$item->date,
+                'distance'=>$distance,
+                'calorie'=>$calorie
+            );
+
+            $week_distance+=$distance;
+            $week_calories+=$calorie;
+            $i = $i+1;
+        }
+        $data['weekOverview']=array(
+            'days'=>$week_days,
+            'distance'=>$week_distance,
+            'calories'=>round($week_calories/1000,2)
+        );
 
         $this->load->view('admin/admin_page',$data);
     }

@@ -29,13 +29,13 @@ class Sports extends CI_Controller {
             'cityid'=>$result->cityid
         );
 
-
-        $sport = $this->sport_model->find_by_user($result->userid);
+        //总运动数据
+        $user_total_sport = $this->sport_model->find_by_user($result->userid);
         $total_days = 0;
         $total_distance=0;
         $total_calories = 0;
         $i = 0;
-        foreach($sport as $item){
+        foreach($user_total_sport as $item){
 
             $distance = round($item->distance,2);
             if($distance!=0) $total_days+=1;
@@ -55,13 +55,13 @@ class Sports extends CI_Controller {
             'total_distance'=>$total_distance,
             'total_calories'=>$total_calories/1000
         );
-
-        $sport = $this->sport_model->find_week_info($result->userid);
+        //周运动数据
+        $user_week_sport = $this->sport_model->find_week_info($result->userid);
         $i = 0;
         $week_days=0;
         $week_distance = 0;
         $week_calories = 0;
-        foreach($sport as $item){
+        foreach($user_week_sport as $item){
 
             $distance = round($item->distance,2);
             if($distance!=0) $week_days+=1;
@@ -79,9 +79,10 @@ class Sports extends CI_Controller {
         $data['weekOverview']=array(
             'week_days'=>$week_days,
             'week_distance'=>$week_distance,
-            'week_calories'=>$week_calories/1000
+            'week_calories'=>round($week_calories,2)
         );
 
+        //排行榜数据
         $sport = $this->sport_model->find_top_calorie();
         $i = 0;
         foreach($sport as $item){
@@ -102,7 +103,15 @@ class Sports extends CI_Controller {
             'body_fat'=>$body->body_fat,
         );
 
-
+        //代换数据
+        $run_circle=ceil($data['totalOverview']['total_distance']/0.4);
+        $run_meat=ceil($data['totalOverview']['total_calories']*1000/807/10);
+        $run_gasoline=ceil($data['totalOverview']['total_calories']*1000/8022);
+        $data['scalling'] = array(
+          'run_circle'=>$run_circle,
+            'run_meat'=>$run_meat,
+            'run_gasoline'=>$run_gasoline
+        );
         $this->load->view('sports/statistics',$data);
     }
 
@@ -110,7 +119,13 @@ class Sports extends CI_Controller {
         $result = $this->sport_model->set_body_message($userid,$weight,$height,$body_fat);
         if($result){
             $result = $this->sport_model->find_body_info($userid);
-            echo json_encode($result);
+            $data = array(
+              'height'=>$result->height,
+                'weight'=>$result->weight,
+                'BMI'=>round($result->BMI,2),
+                'body_fat'=>$result->body_fat
+            );
+            echo json_encode($data);
         }
     }
 

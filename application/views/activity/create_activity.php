@@ -60,7 +60,7 @@ header("Content-Type: text/html; charset=utf-8");
                     <a class="page-scroll" href="index.html">Home</a>
                 </li>
                 <li class="dropdown">
-                    <a href="activity.html" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
+                    <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">单人PK</a></li>
                         <li><a href="#">多人竞赛</a></li>
@@ -112,27 +112,13 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="body">
             <div class="row">
 
-                <div class="col-md-2 col-md-offset-1" id="guiding">
-                    <div class="list-group hidden-sm hidden-xs">
-                        <a href="#" class="list-group-item">单人PK</a>
-                        <a href="#" class="list-group-item">多人竞赛</a>
-                        <a href="#" class="list-group-item">小组活动</a>
-                        <a href="#" class="list-group-item my-activity">我的活动</a>
-                        <a href="create-activity.html" class="list-group-item active"><i class="fa fa-plus-circle"></i>创建活动</a>
-                    </div>
-
-                    <div class="visible-sm visible-xs">
-                        <ul class="nav nav-tabs nav-justified">
-                            <li><a href="#">单人PK</a></li>
-                            <li><a href="#">多人竞赛</a></li>
-                            <li><a href="#">小组活动</a></li>
-                            <li class="active"><a href="create-activity.html"><i class="fa fa-plus-circle"></i>创建活动</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-md-9 col-sm-9 col-xs-10" id="create-activity-info">
+                <div class="col-md-10 col-sm-10 col-xs-10" id="create-activity-info">
                     <h1>创建活动</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="<?php echo site_url()."welcome"?>">首页</a></li>
+                        <li><a href="<?php echo site_url()."activity/show_all_act/-1/1"?>">活动</a></li>
+                        <li class="active">创建活动</li>
+                    </ol>
                     <hr>
                     <div id="activity-content">
                         <?php echo form_open_multipart("activity/create_activity")?>

@@ -15,6 +15,8 @@ class activity extends CI_Controller {
         $this->load->model('parti_act_model');
         $this->load->model('user_model');
         $this->load->library('pagination');
+
+        $this->load->model('report_model');
     }
 
     public function index(){
@@ -90,7 +92,7 @@ class activity extends CI_Controller {
                 array(
                     'field'=>'act-description',
                     'label'=>'act-description',
-                    'rules'=>'required|min_length[8]|max_length[100]',
+                    'rules'=>'required|min_length[3]|max_length[100]',
                     'errors'=>array(
                         'required'=>'请添加活动简介',
                         'min_length'=>'多说几句吧',
@@ -133,8 +135,23 @@ class activity extends CI_Controller {
 
                 $activityid=$this->activity_model->insert($insert_data);
 
-                $data['actInfo'] = $insert_data;
-                $data['partiInfo'] = $this->parti_act_model->get_by_activity($activityid);
+                $result = $this->activity_model->read_act_info($activityid);
+
+                if($result!=false){
+                    $data['actInfo'] = array(
+                        'actid'=>$result->activityid,
+                        'activityname'=>$result->activityname,
+                        'authorid'=>$result->authorid,
+                        'type'=>$result->type,
+                        'start_time'=>$result->start_time,
+                        'end_time'=>$result->end_time,
+                        'bonus'=>$result->bonus,
+                        'description'=>$result->description,
+                        'des_image'=>$result->des_image
+                    );
+                    $data['partiInfo'] = $this->parti_act_model->get_by_activity($result->activityid);
+
+                }
 
                 $this->load->view('activity/single_activity',$data);
             }
@@ -253,6 +270,8 @@ class activity extends CI_Controller {
     //退出活动
     public function exit_activity($userid,$activityid){
         $this->parti_act_model->delete($userid,$activityid);
+
+        $this->get_single_act($activityid);
     }
 
     //参加活动
@@ -278,5 +297,83 @@ class activity extends CI_Controller {
         $data['actInfo'] = $this->activity_model->get_act_by_author($userid,$page,$per_page);
         $data['total_nums']=ceil(count($data['actInfo'])/6);
         echo json_encode($data);
+    }
+
+    //举报活动
+    public function report_act($userid,$activityid,$reason){
+        $reason = urldecode($reason);
+        $insert_data = array(
+            'userid'=>$userid,
+            'activityid'=>$activityid,
+            'reason'=>$reason
+        );
+        $result = $this->report_model->insert($insert_data);
+        if($result!=false){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //管理员获取全部的举报活动列表
+    public function get_all_report(){
+        $result = $this->report_model->read_all_report();
+
+        $i = 0;
+        foreach ($result as $item){
+            $data[$i]=array(
+                'reportid'=>$item->reportid,
+              'username'=>$item->username,
+                'actid'=>$item->activityid,
+                'actname'=>$item->activityname,
+                'reason'=>$item->reason
+            );
+            $i+=1;
+        }
+
+        echo json_encode($data);
+    }
+
+    //管理员登陆后的界面
+    public function show_admin_page($type, $page_num,$per_page){
+        $result = $this->report_model->read_all_report();
+        if($result){
+            $i = 0;
+            foreach ($result as $item){
+                $data['reportInfo'][$i]=array(
+                    'reportid'=>$item->reportid,
+                    'username'=>$item->username,
+                    'actid'=>$item->activityid,
+                    'actname'=>$item->activityname,
+                    'reason'=>$item->reason
+                );
+                $i+=1;
+            }
+        }else{
+            $data['null_message'] = '没有被举报的活动哦';
+        }
+
+
+        $data['actItem'] = $this->activity_model->get_activities($type,$page_num,$per_page);
+        if(empty($data['actItem'])){
+            return false;
+        }
+        $data['actType']=$type;
+        $data['page_num'] = $this->page_seg($type);
+        $data['current_page'] = $page_num;
+
+        $this->load->view("administrator/admin",$data);
+    }
+
+    public function delete_report($reportid){
+        $result = $this->report_model->delete($reportid);
+
+    }
+
+    public function admin_delete_act($activityid){
+        $this->activity_model->delete($activityid);
+        $this->parti_act_model->delete_by_act($activityid);
+
+        $this->show_admin_page(-1,1,6);
     }
 }

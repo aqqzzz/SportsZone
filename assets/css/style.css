@@ -364,18 +364,18 @@ li.active a{
     transition: all 0.35s;
 }
 
-
-
 #create-activity-info #activity-content {
-    margin-left: 30px;
+    padding-left: 30px;
 }
 
 #create-activity-info hr,
-#my-activity-box hr{
+#my-activity-box hr,
+#activity-info hr{
     max-width: 100%;
 }
 
 #create-activity-info {
+    margin-left:8%;
     background-color: white;
     padding-bottom: 2%;
     padding-left: 10px;

@@ -24,6 +24,6 @@ class admin extends CI_Controller {
                 'cityid'=>$result->cityid
             );
 
-        $this->load->view('administrater/admin',$data);
+        $this->load->view('administrator/admin',$data);
     }
 }

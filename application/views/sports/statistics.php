@@ -156,7 +156,7 @@ header("Content-Type: text/html; charset=utf-8");
                                     </mark>km</span>
                                 <span><i class="fa fa-fire fa-2x"></i>燃烧<mark id="week-sports-calorie">
                                         <?php echo $weekOverview['week_calories']?>
-                                    </mark>卡路里</span>
+                                    </mark>大卡</span>
                             </div>
                             <hr>
                             <div class="sports-time-analysis text-center">
@@ -192,16 +192,16 @@ header("Content-Type: text/html; charset=utf-8");
                             <div class="sports-total-courage text-center">
                                 <h2>这些热量相当于</h2>
                                 <div class="courage-box">
-                                    <span>绕环形跑道(圈)<br><mark>30</mark></span>
-                                    <span>消耗肥肉(公斤)<br><mark>5</mark></span>
-                                    <span>省93#汽油(升)<br><mark>2</mark></span>
+                                    <span>绕环形跑道(400/圈)<br><mark><?php echo $scalling['run_circle']?></mark></span>
+                                    <span>消耗肥肉(公斤)<br><mark><?php echo $scalling['run_meat']?></mark></span>
+                                    <span>省93#汽油(升)<br><mark><?php echo $scalling['run_gasoline']?></mark></span>
                                 </div>
                             </div>
 
                             <div class="sports-time-analysis text-center">
                                 <h2>运动距离</h2>
                                 <div class="total-time-charts"></div>
-                                <span>共跑步<mark><?php echo $totalOverview['total_days']?></mark>km</span>
+                                <span>共跑步<mark><?php echo $totalOverview['total_distance']?></mark>km</span>
 
                             </div>
                             <div class="calorie-time-analysis text-center">
@@ -254,8 +254,9 @@ header("Content-Type: text/html; charset=utf-8");
                             <span>BMI：<mark id="bmi"><?php echo $bodyInfo['BMI']?></mark></span>
                             <span>体脂：<mark id="body-fat"><?php echo $bodyInfo['body_fat']?></mark></span>
 
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="set-body-bttn">更改</button>
                             <div class="bd-example">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">更改</button>
+
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -333,6 +334,16 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript">
     $(document).ready(function(){
+
+        var session_user = <?php echo $userid?>;
+        var page_user = <?php echo $userInfo['userid']?>;
+
+        if(session_user==page_user){
+            $("#set-body-bttn").css("display:inline");
+        }else{
+            $("#set-body-bttn").css("display:none");
+        }
+
         $(function () {
             $('.week-time-charts').highcharts({
                 title: {
@@ -372,9 +383,9 @@ header("Content-Type: text/html; charset=utf-8");
                 series: [{
                     name:'跑步距离',
                     data: [
-                        <?php foreach($weekSportsInfo as $item):?>
+                       <?php foreach($weekSportsInfo as $item):?>
                             <?php echo $item['distance']?>,
-                        <?php endforeach;?>
+                       <?php endforeach;?>
                     ]
                 }]
             });
@@ -470,7 +481,7 @@ header("Content-Type: text/html; charset=utf-8");
                     name:'跑步距离',
                     data: [
                         <?php foreach($totalSportsInfo as $item):?>
-                        <?php echo $item['distance']?>,
+                           <?php echo $item['distance']?>,
                         <?php endforeach;?>
                     ]
                 }]
@@ -527,42 +538,42 @@ header("Content-Type: text/html; charset=utf-8");
             });
         });
 
-        $(function () {
-            $('.body-charts').highcharts({
-                title: {
-                    text: 'BMI变化表',
-                    x: -20 //center
-                },
-                xAxis: {
-                    categories: ['2016/10/01', '2016/10/08', '2016/10/15', '2016/10/21']
-                },
-                yAxis: {
-                    title: {
-                        text: 'BMI'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
-                series: [{
-                    name:'BMI',
-                    data: [18.4, 18.7, 19.1, 19.1]
-                }]
-            });
-        });
+//        $(function () {
+//            $('.body-charts').highcharts({
+//                title: {
+//                    text: 'BMI变化表',
+//                    x: -20 //center
+//                },
+//                xAxis: {
+//                    categories: ['2016/10/01', '2016/10/08', '2016/10/15', '2016/10/21']
+//                },
+//                yAxis: {
+//                    title: {
+//                        text: 'BMI'
+//                    },
+//                    plotLines: [{
+//                        value: 0,
+//                        width: 1,
+//                        color: '#808080'
+//                    }]
+//                },
+//                legend: {
+//                    layout: 'vertical',
+//                    align: 'right',
+//                    verticalAlign: 'middle',
+//                    borderWidth: 0
+//                },
+//                series: [{
+//                    name:'BMI',
+//                    data: [18.4, 18.7, 19.1, 19.1]
+//                }]
+//            });
+//        });
 
         $('#change-body-bttn').unbind('click').click(function(){
 
             var weight = $("#weight-post").val();
-            var height = $("#height-post").val()/100;
+            var height = $("#height-post").val();
             var body_fat = $("#body-fat-post").val();
 
             alert ("<?php echo site_url()."sports/set_body_data/".$userInfo['userid']."/"?>"+weight+"/"+height+"/"+body_fat);
@@ -577,12 +588,10 @@ header("Content-Type: text/html; charset=utf-8");
 
                     if(result){
 
-
-                        $("#height").html(result.height*100);
+                        $("#height").html(result.height);
                         $("#weight").html(result.weight);
                         $("#body-fat").html(result.body_fat);
                         $("#bmi").html(result.BMI);
-
 
                     }
                 }

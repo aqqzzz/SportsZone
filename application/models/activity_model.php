@@ -106,8 +106,11 @@ class activity_model extends CI_Model {
     }
 
     public function delete($id){
-        $this->db->where("activityid",$id);
-        $this->db->delete('activity');
+        $this->db->delete('activity',array('activityid'=>$id));
+
+        $this->db->delete('report_audit',array('activityid'=>$id));
     }
+
+
 
 }

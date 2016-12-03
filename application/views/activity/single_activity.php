@@ -61,7 +61,7 @@ header("Content-Type: text/html; charset=utf-8");
                         <i class="fa fa-home visible-xs" ></i>Home</a>
                 </li>
                 <li class="dropdown">
-                    <a href="activity.html" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
+                    <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">单人PK</a></li>
                         <li><a href="#">多人竞赛</a></li>
@@ -112,7 +112,29 @@ header("Content-Type: text/html; charset=utf-8");
         <span class="button_panel">
             <button class="btn btn-default" id="create"><i class="fa fa-plus-circle fa-2x"></i>创建活动</button>
         </span>
+        <hr>
 
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">举报信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>举报活动：<?php echo $actInfo['activityname']?></p>
+                        <p>
+                            举报理由：<textarea class="form-control" rows="5" id="news-content" name="news-content"></textarea>
+                        </p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-default" id="release-bttn">提交</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
 
 
 
@@ -130,7 +152,7 @@ header("Content-Type: text/html; charset=utf-8");
                     ?></a></li>
             <li class="active"><?php echo $actInfo['activityname']?></li>
         </ol>
-        <hr>
+
         <div class="row">
             <div class="col-md-8">
                 <img src="<?php echo $actInfo['des_image']?>" class="img-responsive">
@@ -195,16 +217,21 @@ header("Content-Type: text/html; charset=utf-8");
 
 <script type="text/javascript" src="<?php echo base_url()?>assets/js/scripts.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function() {
         var cur_id = <?php echo $userid?>;
         var author_id = <?php echo $actInfo['authorid']?>;
 
-        if(cur_id==author_id){
+
+        if (cur_id == author_id) {
             var delete_bttn = $("<button class='btn btn-default' id='delete_bttn'><i class='fa fa-trash fa-2x'></i>删除活动</button>");
             $(".button_panel").append(delete_bttn);
 
             var edit_bttn = $("<button class='btn btn-default' id='edit_bttn'><i class='fa fa-edit fa-2x'></i>编辑活动</button>");
             $(".button_panel").append(edit_bttn);
+        }else if(cur_id==0){
+            var delete_bttn = $("<button class='btn btn-default' id='delete_bttn'><i class='fa fa-trash fa-2x'></i>删除活动</button>");
+            $(".button_panel").append(delete_bttn);
+            $(".button_panel #create").css("display","none");
         }else{
             var is_parti = false;
             <?php foreach ($partiInfo as $user):?>
@@ -222,11 +249,36 @@ header("Content-Type: text/html; charset=utf-8");
                 var parti_bttn = $("<button class='btn btn-default' id='parti_bttn'><i class='fa fa-sign-in fa-2x'></i>参加活动</button>");
                 $(".button_panel").append(parti_bttn);
             }
+
+            var report_bttn = $("<button class='btn btn-default' data-toggle='modal' data-target='#myModal' id='report_bttn'>" +
+                "<i class='fa fa-volume-control-phone fa-2x'></i>举报活动</button>");
+            $(".button_panel").append(report_bttn);
         }
 
-        $(document).on("click","#delete_bttn",function(){
+        $(document).on("click","#myModal #release-bttn",function(){
 
-            window.location="<?php echo site_url()."activity/delete_act/".$actInfo['actid']?>";
+            var reason = $("#myModal .modal-body textarea").val();
+
+            $.ajax({
+                type:"POST",
+                url:"<?php echo site_url()."activity/report_act/".$userid."/".$actInfo['actid']."/"?>"+reason,
+                dataType:'json',
+                data:{userid:<?php echo $userid?>,activityid:<?php echo $actInfo['actid']?>,reason:reason},
+                success: function(result){
+                    if(result==1){
+                        alert("举报成功");
+                        $("#myModal").modal('hide');
+                    }
+                }
+            });
+        });
+
+        $(document).on("click","#delete_bttn",function(){
+            if(cur_id==0){
+                window.location="<?php echo site_url()."activity/admin_delete_act/".$actInfo['actid']?>";
+            }else{
+                window.location="<?php echo site_url()."activity/delete_act/".$actInfo['actid']?>";
+            }
         });
 
         $(document).on("click","#edit_bttn",function(){

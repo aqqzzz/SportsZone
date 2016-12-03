@@ -50,11 +50,11 @@ class Sport_model extends CI_Model {
     //体重/身高的平方 kg/m2
     public function set_body_message($userid,$weight,$height,$body_fat){
 
-        $bmi = $weight/(pow($height,2));
+        $bmi = $weight/(pow($height/100,2));
         $data = array(
             'weight'=>$weight,
             'height'=>$height,
-            'BMI'=>$bmi,
+            'BMI'=>round($bmi,2),
             'body_fat'=>$body_fat
         );
 
@@ -70,7 +70,6 @@ class Sport_model extends CI_Model {
 
     public function find_by_user($userid){
         $result = $this->db->query("select * from sport where userid=".$userid);
-
         return $result->result();
     }
 
