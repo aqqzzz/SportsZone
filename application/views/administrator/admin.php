@@ -50,7 +50,7 @@ header("Content-Type: text/html; charset=utf-8");
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand page-scroll" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
@@ -420,7 +420,8 @@ header("Content-Type: text/html; charset=utf-8");
                             '<th>活动编号</th> ' +
                             '<th>活动名称</th> ' +
                             '<th>举报者</th> ' +
-                            '<th>举报理由</th> ').appendTo(thead);
+                            '<th>举报理由</th> ' +
+                            '<th></th>').appendTo(thead);
 
                         var tbody = $('<tbody>').appendTo(table);
 
@@ -432,6 +433,7 @@ header("Content-Type: text/html; charset=utf-8");
                                 '<td>'+value.actname+'</td> ' +
                                 '<td>'+value.username+'</td> '+
                                 '<td>'+value.reason+'</td> ' +
+                                '<td><button class="btn btn-primary ignore">忽略</button></td>'+
                                 '</tr>';
                             tbody.append(elem);
                         })
@@ -467,7 +469,6 @@ header("Content-Type: text/html; charset=utf-8");
 //            $(this).closest ('tr').remove ();
 //        })
 
-        //不能真正删除，只能删掉界面上的
         $('table tbody tr .ignore').on('click',function(){
            event.stopPropagation();
             $(this).closest('tr').remove();

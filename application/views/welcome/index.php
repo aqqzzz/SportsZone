@@ -18,6 +18,9 @@ header("Content-Type: text/html; charset=utf-8");
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sports Zone</title>
+    <meta name="description" content="和运动发烧友一起开启你的运动之旅">
+
+    <meta name="keywords" content="HTML,sports,运动">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -256,7 +259,7 @@ header("Content-Type: text/html; charset=utf-8");
         <div class="container text-center">
             <div class="call-to-action">
                 <h2>更多...</h2>
-                <a href="activity.html" class="btn btn-default btn-xl sr-button">查看更多</a>
+                <a href="<?php echo site_url()."activity/show_all_act"?>" class="btn btn-default btn-xl sr-button">查看更多</a>
             </div>
         </div>
     </aside>

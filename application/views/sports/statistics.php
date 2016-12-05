@@ -46,7 +46,7 @@ header("Content-Type: text/html; charset=utf-8");
 <body id="statistics" data-spy="scroll" data-target="sidebarMenu">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">

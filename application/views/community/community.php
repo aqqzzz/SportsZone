@@ -47,7 +47,7 @@ header("Content-Type: text/html; charset=utf-8");
 <body id="community" data-spy="scroll" data-target="sidebarMenu">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
@@ -168,8 +168,10 @@ header("Content-Type: text/html; charset=utf-8");
                         <div id="user-message-box">
                             <div class="message-item">
                                 <div class="message-header">
+                                    <a href="<?php echo site_url()."user_authentication/show_admin_page/".$item->authorid."/".$item->username?>">
+                                        <img src="<?php echo $item->avatar?>" class="img-circle">
+                                    </a>
 
-                                    <img src="<?php echo $item->avatar?>" class="img-circle">
                                     <p class="user-name"><?php echo $item->username?><br><?php echo $item->reltime?></p>
                                 </div>
                                 <div class="message-content">

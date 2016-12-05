@@ -52,17 +52,17 @@ header("Content-Type: text/html; charset=utf-8");
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand page-scroll" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
         <div class="collapse navbar-collapse" id="header-nav">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="page-scroll" href="index.html">Home</a>
+                    <a href="<?php echo base_url()?>">Home</a>
                 </li>
                 <li class="dropdown">
-                    <a href="activity.html" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
+                    <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">单人PK</a></li>
                         <li><a href="#">多人竞赛</a></li>

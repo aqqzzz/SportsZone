@@ -17,6 +17,9 @@ header("Content-Type: text/html; charset=utf-8");
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sports Zone</title>
+    <meta name="description" content="和运动发烧友一起开启你的运动之旅">
+
+    <meta name="keywords" content="HTML,sports,运动">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,20 +47,20 @@ header("Content-Type: text/html; charset=utf-8");
 <body id="single-activity">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand page-scroll" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
         <div class="collapse navbar-collapse" id="header-nav">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="page-scroll" href="index.html">
+                    <a href="<?php echo base_url()?>">
                         <i class="fa fa-home visible-xs" ></i>Home</a>
                 </li>
                 <li class="dropdown">
@@ -272,6 +275,10 @@ header("Content-Type: text/html; charset=utf-8");
                 }
             });
         });
+
+        $(document).on("click","#create",function(){
+            window.location="<?php echo site_url()."activity/create_activity"?>";
+        })
 
         $(document).on("click","#delete_bttn",function(){
             if(cur_id==0){

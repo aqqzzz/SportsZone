@@ -105,10 +105,22 @@ class activity_model extends CI_Model {
         }
     }
 
+    public function get_search_num($activityname){
+        $result = $this->db->query("select * from activity where activityname LIKE '%".$activityname."%'");
+        return $result->num_rows();
+    }
+
     public function delete($id){
         $this->db->delete('activity',array('activityid'=>$id));
 
         $this->db->delete('report_audit',array('activityid'=>$id));
+    }
+
+    public function find($activityname){
+
+        $result = $this->db->query("select * from activity where activityname LIKE '%".$activityname."%'");
+
+        return $result->result();
     }
 
 

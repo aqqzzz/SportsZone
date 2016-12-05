@@ -17,6 +17,9 @@ header("Content-Type: text/html; charset=utf-8");
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sports Zone</title>
+    <meta name="description" content="和运动发烧友一起开启你的运动之旅">
+
+    <meta name="keywords" content="HTML,sports,运动">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,13 +47,13 @@ header("Content-Type: text/html; charset=utf-8");
 <body id="activity">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand page-scroll" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
@@ -148,8 +151,8 @@ header("Content-Type: text/html; charset=utf-8");
                     <div class="search-box text-center">
                         <div class="row">
                             <div class="col-md-6 col-md-offset-2">
-                                <input type="text" class="form-control" placeholder="我想找...">
-                                <button class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <input type="text" class="form-control" placeholder="我想找..." id="search-text">
+                                <button class="btn btn-default" id="search-bttn"><i class="fa fa-search"></i></button>
                             </div>
 
                         </div>
@@ -255,9 +258,37 @@ header("Content-Type: text/html; charset=utf-8");
         loadMyAct(userid,type_array);
         loadMyCreateAct(userid,type_array);
 
+        reloadActBySearch(type_array);
+
 
 
     })
+
+    function reloadActBySearch(type_array){
+        $("button#search-bttn").unbind('click').click(function(){
+
+            var activityname = $("#search-text").val();
+
+
+            //点击不同的竞赛类型，应该使用ajax发送请求
+            $.ajax({
+                type:"GET",
+                url:"<?php echo site_url()."activity/search/"?>"+activityname,
+                dataType:'json',
+                data:{activityname:activityname},
+                success: function(result){
+                    if(result){
+
+                        reload(result,type_array,-1,1);
+
+                    }
+                }
+            });
+
+
+
+        });
+    }
 
     function reloadActByType(type_array){
         $(".total-act").unbind('click').click(function(){

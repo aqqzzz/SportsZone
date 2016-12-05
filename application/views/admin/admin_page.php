@@ -17,6 +17,9 @@ header("Content-Type: text/html; charset=utf-8");
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sports Zone</title>
+    <meta name="description" content="和运动发烧友一起开启你的运动之旅">
+
+    <meta name="keywords" content="HTML,sports,运动">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -443,6 +446,7 @@ header("Content-Type: text/html; charset=utf-8");
                             data:{userid:session_user,unfollowid:page_user},
                             success:function(result){
                                 if(result){
+                                    alert("成功取消关注");
                                     $('#img-ref .project-category').html("关注");
                                 }
                             }
@@ -457,6 +461,7 @@ header("Content-Type: text/html; charset=utf-8");
                             data:{userid:session_user,unfollowid:page_user},
                             success:function(result){
                                 if(result){
+                                    alert("成功关注");
                                     $('#img-ref .project-category').html("取消关注");
                                 }
                             }

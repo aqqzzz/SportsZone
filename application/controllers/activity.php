@@ -27,16 +27,19 @@ class activity extends CI_Controller {
         $this->load->view('activity/create_activity');
     }
 
-    private function do_upload(){
+    public function do_upload(){
         $config['upload_path']      = './assets/images/portfolio/thumbnail/';
         $config['allowed_types']    = 'gif|jpg|png|jpeg';
+        $config['max_size'] = '2000';
+        $config['max_width'] = '2000';
+        $config['max_height'] = '2000';
 
 //        echo $config['upload_path'];
 //        die(var_dump(is_writable($config['upload_path'])));
-
+//
         $this->load->library('upload',$config);
-//        $this->upload->initialize($config);
-
+        $this->upload->initialize($config);
+        unset($config);
         if ( ! $this->upload->do_upload('inputfile'))
         {
             $data['img'] = base_url().'assets/images/default-activity-pic.jpg';
@@ -47,8 +50,6 @@ class activity extends CI_Controller {
             $file_data = array('upload_data' => $this->upload->data());
 
             $data['img'] = base_url().'assets/images/portfolio/thumbnail/'.$file_data['upload_data']['file_name'];
-
-
         }
         return $data;
 
@@ -104,13 +105,12 @@ class activity extends CI_Controller {
             $this->form_validation->set_rules($config);
 
 
-
-
             if($this->form_validation->run()==false){
                 $this->load->view('activity/create_activity');
             }else{
 
                 $des_image = $result['img'];
+
 
                 $authorid = $this->session->userdata['logged_in']['userid'];
                 $activityname = $this->input->post('act-name');
@@ -164,7 +164,7 @@ class activity extends CI_Controller {
         if(is_numeric($str)){
             return true;
         }else{
-            $this->form_validation->set_message('check_digital','请再奖励域输入数字！');
+            $this->form_validation->set_message('check_digital','请在奖励域输入数字！');
             return false;
         }
     }
@@ -259,6 +259,23 @@ class activity extends CI_Controller {
         $this->parti_act_model->delete_by_act($activityid);
 
         $this->show_all_act();
+    }
+
+    //查询
+    public function search($activityname){
+
+        $activityname=urldecode($activityname);
+
+        $data['actInfo'] = $this->activity_model->find($activityname);
+        if(empty($data['actInfo'])){
+            echo "empty";
+            return false;
+        }
+
+        $result_num=$this->activity_model->get_search_num($activityname);
+        $data['total_nums']=$pages = ceil($result_num/6);
+
+        echo json_encode($data);
     }
 
     //获取活动的全部参与者信息

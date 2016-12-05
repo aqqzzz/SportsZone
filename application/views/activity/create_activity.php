@@ -17,6 +17,9 @@ header("Content-Type: text/html; charset=utf-8");
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sports Zone</title>
+    <meta name="description" content="和运动发烧友一起开启你的运动之旅">
+
+    <meta name="keywords" content="HTML,sports,运动">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url();?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -44,20 +47,20 @@ header("Content-Type: text/html; charset=utf-8");
 <body id="activity" data-spy="scroll" data-target="sidebarMenu">
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container">
 
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Sport Zone 运动空间</a>
+            <a class="navbar-brand page-scroll" href="<?php echo base_url()?>">Sport Zone 运动空间</a>
         </div>
 
         <!--到其他页面的导航按钮-->
         <div class="collapse navbar-collapse" id="header-nav">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="page-scroll" href="index.html">Home</a>
+                    <a href="<?php echo base_url()?>">Home</a>
                 </li>
                 <li class="dropdown">
                     <a href="<?php echo site_url()."activity/show_all_act"?>" class="dropdown-toggle" data-toggle="dropdown">Activities<span class="caret"></span></a>

@@ -36,13 +36,41 @@ class user_authentication extends CI_Controller {
         $this->load->view('login/registration_form');
     }
 
+    //用户名验证规则
+    public function check_username($str){
+        $pattern="/^[\x{4E00}-\x{9FA5}A-Za-z0-9]+$/u";
+        if(preg_match($pattern,$str)){
+            return true;
+        }else{
+            $this->form_validation->set_message('check_username','<i class="fa fa-exclamation-triangle"></i>用户名中只能包含汉字、英文和数字');
+            return false;
+        }
+
+    }
+
     //处理注册过程的逻辑
     public function register_process(){
-        $this->form_validation->set_rules('username','Username','trim|required|xss_clean',
-            array('required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'));
-        $this->form_validation->set_rules('password','Password','trim|required|xss_clean',
-            array('required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'));
 
+        $config = array(
+          array(
+              'field'=>'username',
+              'label'=>'Username',
+              'rules'=>'required|callback_check_username',
+              'errors'=>array(
+                  'required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'
+              ),
+          ),
+          array(
+              'field'=>'password',
+              'label'=>'Password',
+              'rules'=>'trim|required|xss_clean',
+              'errors'=>array(
+                  'required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'
+              ),
+          )
+        );
+
+        $this->form_validation->set_rules($config);
         if($this->form_validation->run()==FALSE){
             $this->load->view('login/registration_form');
         }else{
@@ -64,13 +92,28 @@ class user_authentication extends CI_Controller {
 
     //处理登录过程的逻辑
     public function login_process(){
-        $this->session->unset_userdata['logged_in'];
+//        $this->session->unset_userdata['logged_in'];
 
-        $this->form_validation->set_rules('username','Username','trim|required|xss_clean',
-            array('required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'));
-        $this->form_validation->set_rules('password','Password','trim|required|xss_clean',
-            array('required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'));
+        $config = array(
+            array(
+                'field'=>'username',
+                'label'=>'Username',
+                'rules'=>'required|callback_check_username',
+                'errors'=>array(
+                    'required'=>'<i class="fa fa-exclamation-triangle"></i>用户名不能为空'
+                ),
+            ),
+            array(
+                'field'=>'password',
+                'label'=>'Password',
+                'rules'=>'trim|required|xss_clean',
+                'errors'=>array(
+                    'required'=>'<i class="fa fa-exclamation-triangle"></i>密码不能为空'
+                ),
+            )
+        );
 
+        $this->form_validation->set_rules($config);
        // $this->form_validation->set_rules('username','Username','neccessary_input_check');
         //$this->form_validation->set_rules('password','Password','neccessary_input_check');
 
@@ -226,7 +269,7 @@ class user_authentication extends CI_Controller {
         //echo $username;
         $username = $this->session->userdata['logged_in']['username'];
         $username=urldecode($username);
-        echo($username);
+
         $result = $this->user_model->read_user_information($username);
 
         if($result!=false){
@@ -249,6 +292,7 @@ class user_authentication extends CI_Controller {
         $sessionid = $this->session->userdata['logged_in']['userid'];
         if($userid==$sessionid){
             $data['userInfo'] = $this->session->userdata['logged_in'];
+
         }else{
             $result = $this->user_model->read_user_information($username);
             $data['userInfo'] = array(
@@ -259,22 +303,21 @@ class user_authentication extends CI_Controller {
                 'cityid'=>$result->cityid
             );
 
-            $result = $this->news_model->find_by_user($userid);
-            if($result){
-                $i=0;
-                foreach ($result as $item){
-                    $data['newsInfo'][$i] = array(
-                        'newsid'=>$item->newsid,
-                        'authorid'=>$item->authorid,
-                        'reltime'=>$item->reltime,
-                        'content'=>$item->content,
-                    );
-                    $i = $i+1;
-                }
-            }else{
-                $data['null_news'] = "这里还没有动态";
+        }
+        $result = $this->news_model->find_by_user($userid);
+        if($result){
+            $i=0;
+            foreach ($result as $item){
+                $data['newsInfo'][$i] = array(
+                    'newsid'=>$item->newsid,
+                    'authorid'=>$item->authorid,
+                    'reltime'=>$item->reltime,
+                    'content'=>$item->content,
+                );
+                $i = $i+1;
             }
-
+        }else{
+            $data['null_news'] = "这里还没有动态";
         }
 
         //周运动数据
